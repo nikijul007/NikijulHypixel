@@ -32,6 +32,8 @@ public class NikijulHypixel {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		
+		/* Events */
 		MinecraftForge.EVENT_BUS.register(new Events());
 		
 		/* Key-Binding */
