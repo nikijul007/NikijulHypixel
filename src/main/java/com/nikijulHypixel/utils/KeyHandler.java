@@ -17,10 +17,6 @@ public class KeyHandler {
 	@SubscribeEvent
 	public void onKeyPressed(KeyInputEvent event) {
 		if (NikijulHypixel.keyBinding.isKeyDown()) {
-			EntityPlayer p = Minecraft.getMinecraft().thePlayer;
-			p.addChatComponentMessage(new ChatComponentText(
-					"Du hast die Taste " + Keyboard.getKeyName(NikijulHypixel.keyBinding.getKeyCode()) + " gedrückt!"));
-
 			Minecraft.getMinecraft().displayGuiScreen(new GuiZealot());
 		}
 		

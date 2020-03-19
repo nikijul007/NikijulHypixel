@@ -16,12 +16,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Events {
 	
-	@SubscribeEvent
-	public void onGuiOpen(GuiOpenEvent event) {
-		if(event.gui instanceof GuiBeacon) {
-			event.gui = new GuiZealot();
-		}
-	}
 	
 	
 }
