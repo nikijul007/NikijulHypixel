@@ -19,6 +19,6 @@ public class KeyHandler {
 		if (NikijulHypixel.keyBinding.isKeyDown()) {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiZealot());
 		}
-		
+
 	}
 }

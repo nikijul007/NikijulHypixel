@@ -15,7 +15,5 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Events {
-	
-	
-	
+
 }
