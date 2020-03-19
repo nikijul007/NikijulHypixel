@@ -15,18 +15,6 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Events {
-
-	@SubscribeEvent
-	public void onPlayerSleep(PlayerSleepInBedEvent event) {
-		if (event.entity instanceof EntityPlayer) {
-			EntityPlayer player = event.entityPlayer;
-			if (!player.worldObj.provider.isDaytime() && !player.worldObj.isRemote) {
-
-				player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.DARK_BLUE + "Gute Nacht, " + player.getDisplayNameString() + "!"));
-
-			}
-		}
-	}
 	
 	@SubscribeEvent
 	public void onGuiOpen(GuiOpenEvent event) {
