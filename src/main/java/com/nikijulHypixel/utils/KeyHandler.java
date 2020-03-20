@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 
 import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.gui.GuiZealot;
+import com.nikijulHypixel.gui.SelectItemsGui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -17,7 +18,7 @@ public class KeyHandler {
 	@SubscribeEvent
 	public void onKeyPressed(KeyInputEvent event) {
 		if (NikijulHypixel.keyBinding.isKeyDown()) {
-			Minecraft.getMinecraft().displayGuiScreen(new GuiZealot());
+			Minecraft.getMinecraft().displayGuiScreen(new SelectItemsGui());
 		}
 
 	}
