@@ -29,16 +29,15 @@ public class SelectItemsGui extends GuiScreen {
 		textField.setMaxStringLength(25);
 		textField.setFocused(true);
 		textField.setCanLoseFocus(false);
-		
 
 	}
-	
+
 	@Override
 	public void updateScreen() {
 		textField.updateCursorCounter();
 		super.updateScreen();
 	}
-	
+
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		textField.textboxKeyTyped(typedChar, keyCode);
@@ -47,13 +46,13 @@ public class SelectItemsGui extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-		drawDefaultBackground();
+		// drawDefaultBackground();
 
 		this.mc.getTextureManager().bindTexture(new ResourceLocation("nikijulhypixel:textures/gui/background.png"));
 		drawTexturedModalRect((super.width - width) / 2, (super.height - height) / 2, 0, 0, width, height);
-		
+
 		textField.drawTextBox();
-		
+
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 	}
@@ -62,13 +61,15 @@ public class SelectItemsGui extends GuiScreen {
 	public boolean doesGuiPauseGame() {
 		return false;
 	}
-	
-	
+
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
 		switch (button.id) {
 		case 0:
-			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.DARK_BLUE + "Item hinzugefügt!"));
+			String input = textField.getText();
+			GuiZealot.sList.add(input);
+			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
+					new ChatComponentText(EnumChatFormatting.DARK_BLUE + "Item: " + input + " hinzugefügt!"));
 			break;
 		case 1:
 			Minecraft.getMinecraft().displayGuiScreen(new GuiZealot());
