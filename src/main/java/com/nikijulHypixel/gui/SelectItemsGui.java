@@ -2,6 +2,8 @@ package com.nikijulHypixel.gui;
 
 import java.io.IOException;
 
+import com.nikijulHypixel.bazaar.ActivateItems;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -67,7 +69,7 @@ public class SelectItemsGui extends GuiScreen {
 		switch (button.id) {
 		case 0:
 			String input = textField.getText();
-			GuiZealot.sList.add(input);
+			ActivateItems.addItem(input);
 			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
 					new ChatComponentText(EnumChatFormatting.DARK_BLUE + "Item: " + input + " hinzugefügt!"));
 			break;

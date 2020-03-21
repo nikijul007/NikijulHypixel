@@ -3,6 +3,8 @@ package com.nikijulHypixel.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.nikijulHypixel.bazaar.ActivateItems;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -12,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiZealot extends GuiScreen {
 
-	public static ArrayList<String> sList = new ArrayList<String>();
+	public static ArrayList<String> itemList = ActivateItems.getSelectedItems();
 	
 	private int xSize = 176;
 	private int ySize = 166;
@@ -25,7 +27,7 @@ public class GuiZealot extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		int length = getText().length;
+		int length = itemList.size();
 
 		lastPageItemAmount = length % itemsPerPage;
 		pages = (lastPageItemAmount != 0) ? 1 : 0;
@@ -58,13 +60,13 @@ public class GuiZealot extends GuiScreen {
 		if (pageNumber < pages) {
 
 			for (int i = firstItem; i < firstItem + itemsPerPage; i++) {
-				fontRendererObj.drawString(getText()[i], (this.width - this.xSize) / 2 + 10,
+				fontRendererObj.drawString(itemList.get(i), (this.width - this.xSize) / 2 + 10,
 						(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
 				yOffset += 15;
 			}
 		} else {
 			for (int i = firstItem; i < firstItem + lastPageItemAmount; i++) {
-				fontRendererObj.drawString(getText()[i], (this.width - this.xSize) / 2 + 10,
+				fontRendererObj.drawString(itemList.get(i), (this.width - this.xSize) / 2 + 10,
 						(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
 				yOffset += 15;
 
@@ -106,11 +108,6 @@ public class GuiZealot extends GuiScreen {
 			break;
 		}
 		super.actionPerformed(button);
-	}
-
-	public String[] getText() {
-		String[] s = { sList.toString(), "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
-		return s;
 	}
 
 }

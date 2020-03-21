@@ -2,6 +2,7 @@ package com.nikijulHypixel;
 
 import org.lwjgl.input.Keyboard;
 
+import com.nikijulHypixel.bazaar.BazaarMain;
 import com.nikijulHypixel.utils.Events;
 import com.nikijulHypixel.utils.KeyHandler;
 
@@ -35,7 +36,8 @@ public class NikijulHypixel {
 		
 		/* Events */
 		MinecraftForge.EVENT_BUS.register(new Events());
-		
+		BazaarMain.loadkey();
+		System.out.println(BazaarMain.key);
 		/* Key-Binding */
 		ClientRegistry.registerKeyBinding(keyBinding);
 		FMLCommonHandler.instance().bus().register(new KeyHandler());
