@@ -46,9 +46,10 @@ public class NikijulHypixel {
 		
 		/* Make Config */
 		ConfigApiKey.init();
-		if(!ConfigApiKey.hasCategory("ApiKey")) {
-			ConfigApiKey.writeConfig("ApiKey", "ApiKey", "YOUR KEY");
+		if(!ConfigApiKey.hasCategory("apikey")) {
+			ConfigApiKey.writeConfig("apikey", "ApiKey", "YOUR KEY");
 		}
+		System.out.println(ConfigApiKey.getString("apikey", "ApiKey"));
 	}
 
 	@EventHandler
