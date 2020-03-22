@@ -5,34 +5,34 @@ import java.io.File;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 
-public class ConfigApiKey {
+public class ConfigNikijulHypixel {
 
-	public static Configuration configApiKey;
-	public static String fileApiKey = "config/ApiKey.cfg";
+	public static Configuration config;
+	public static String file = "config/NikijulHypixel.cfg";
 
 	public static void init() {
-		configApiKey = new Configuration(new File(fileApiKey));
+		config = new Configuration(new File(file));
 		try {
-			configApiKey.load();
+			config.load();
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 
 		} finally {
-			configApiKey.save();
+			config.save();
 		}
 
 	}
 
 	public static void removeConfig(String category) {
-		configApiKey = new Configuration(new File(fileApiKey));
+		config = new Configuration(new File(file));
 		try {
-			configApiKey.load();
-			if (configApiKey.hasCategory(category))
-				configApiKey.removeCategory(new ConfigCategory(category));
+			config.load();
+			if (config.hasCategory(category))
+				config.removeCategory(new ConfigCategory(category));
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {
-			configApiKey.save();
+			config.save();
 		}
 	}
 
@@ -40,81 +40,81 @@ public class ConfigApiKey {
 	 * Removes specific key in specific category from configuration file.
 	 */
 	public static void removeConfig(String category, String name) {
-		configApiKey = new Configuration(new File(fileApiKey));
+		config = new Configuration(new File(file));
 		try {
-			configApiKey.load();
-			if (configApiKey.getCategory(category).containsKey(name))
-				configApiKey.getCategory(category).remove(name);
+			config.load();
+			if (config.getCategory(category).containsKey(name))
+				config.getCategory(category).remove(name);
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {
-			configApiKey.save();
+			config.save();
 		}
 	}
 
 	public static String getString(String category, String name) {
-		configApiKey = new Configuration(new File(fileApiKey));
+		config = new Configuration(new File(file));
 		try {
-			configApiKey.load();
-			if (configApiKey.getCategory(category).containsKey(name)) {
-				return configApiKey.get(category, name, "").getString();
+			config.load();
+			if (config.getCategory(category).containsKey(name)) {
+				return config.get(category, name, "").getString();
 			}
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {
-			configApiKey.save();
+			config.save();
 		}
 		return "";
 	}
 
 	public static void writeConfig(String category, String name, String value) {
-		configApiKey = new Configuration(new File(fileApiKey));
+		config = new Configuration(new File(file));
 		try {
-			configApiKey.load();
-			String set = configApiKey.get(category, name, value).getString();
-			configApiKey.getCategory(category).get(name).set(value);
+			config.load();
+			String set = config.get(category, name, value).getString();
+			config.getCategory(category).get(name).set(value);
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {
-			configApiKey.save();
+			config.save();
 		}
 	}
 
 
 	public static boolean hasCategory(String category) {
-		configApiKey = new Configuration(new File(fileApiKey));
+		config = new Configuration(new File(file));
 		try {
-			configApiKey.load();
-			return configApiKey.hasCategory(category);
+			config.load();
+			return config.hasCategory(category);
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {
-			configApiKey.save();
+			config.save();
 		}
 		return false;
 	}
 
 	public static boolean hasKey(String category, String name) {
-		configApiKey = new Configuration(new File(fileApiKey));
+		config = new Configuration(new File(file));
 		try {
-			configApiKey.load();
-			if (!configApiKey.hasCategory(category))
+			config.load();
+			if (!config.hasCategory(category))
 				return false;
-			return configApiKey.getCategory(category).containsKey(name);
+			return config.getCategory(category).containsKey(name);
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {
-			configApiKey.save();
+			config.save();
 		}
 		return false;
 	}
 
 	public static void setFile(String filename) {
-		fileApiKey = "config/" + filename;
+		file = "config/" + filename;
 	}
 
 	public static String getFile() {
-		return fileApiKey;
+		return file;
 	}
 
 }
