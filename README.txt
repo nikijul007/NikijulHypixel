@@ -1,59 +1,26 @@
--------------------------------------------
-Source installation information for modders
--------------------------------------------
-This code follows the Minecraft Forge installation methodology. It will apply
-some small patches to the vanilla MCP source code, giving you and it access 
-to some of the data and functions you need to build a successful mod.
+--------------------
+Nikijul Hypixel Mod
+--------------------
+This Mod should help to view the Bazaarprices of different Items in an easy Minecraft-Gui.
+It can be easily checked wether an item is currently well suited for sale or rather for purchase.
+The player can chose which items one wants to display.
 
-Note also that the patches are built against "unrenamed" MCP source code (aka
-srgnames) - this means that you will not be able to read them directly against
-normal code.
-
-Source pack installation information:
-
-Standalone source installation
+How to setup:
 ==============================
 
-Step 1: Open your command-line and browse to the folder where you extracted the zip file.
+Step 1 : Download this Modpack as Jar and instal it like all other mods.
+Step 2 : Launch Minecraft with this Mod loadet.
+Step 3 : Now join mc.hypixel.net, get your own apikey with /api and copy it.
+Step 4 : Open .minecraft/config/ApiKey.cfg , paste your key instead of 'YOUR KEY' and save the file.
+Step 5 : Now you can use this Mod.
 
-Step 2: Once you have a command window up in the folder that the downloaded material was placed, type:
 
-Windows: "gradlew setupDecompWorkspace"
-Linux/Mac OS: "./gradlew setupDecompWorkspace"
+How to use:
+===============================
 
-Step 3: After all that finished, you're left with a choice.
-For eclipse, run "gradlew eclipse" (./gradlew eclipse if you are on Mac/Linux)
-
-If you preffer to use IntelliJ, steps are a little different.
-1. Open IDEA, and import project.
-2. Select your build.gradle file and have it import.
-3. Once it's finished you must close IntelliJ and run the following command:
-
-"gradlew genIntellijRuns" (./gradlew genIntellijRuns if you are on Mac/Linux)
-
-Step 4: The final step is to open Eclipse and switch your workspace to /eclipse/ (if you use IDEA, it should automatically start on your project)
-
-If at any point you are missing libraries in your IDE, or you've run into problems you can run "gradlew --refresh-dependencies" to refresh the local cache. "gradlew clean" to reset everything {this does not effect your code} and then start the processs again.
-
-Should it still not work, 
-Refer to #ForgeGradle on EsperNet for more information about the gradle environment.
-
-Tip:
-If you do not care about seeing Minecraft's source code you can replace "setupDecompWorkspace" with one of the following:
-"setupDevWorkspace": Will patch, deobfusicated, and gather required assets to run minecraft, but will not generated human readable source code.
-"setupCIWorkspace": Same as Dev but will not download any assets. This is useful in build servers as it is the fastest because it does the least work.
-
-Tip:
-When using Decomp workspace, the Minecraft source code is NOT added to your workspace in a editable way. Minecraft is treated like a normal Library. Sources are there for documentation and research purposes and usually can be accessed under the 'referenced libraries' section of your IDE.
-
-Forge source installation
-=========================
-MinecraftForge ships with this code and installs it as part of the forge
-installation process, no further action is required on your part.
-
-LexManos' Install Video
-=======================
-https://www.youtube.com/watch?v=8VEdtQLuLO0&feature=youtu.be
-
-For more details update more often refer to the Forge Forums:
-http://www.minecraftforge.net/forum/index.php/topic,14048.0.html
+Step 1 : In Minecraft - Settings - Control you can find the category 'NikijulHypixel'. You can chose your keybind (default = P ).
+Step 2 : Press your keybind ingame. You should see a gui with an textfield and tree Buttons.
+Step 3 : To add an item which you want to see, just type the name in the textfield and hit enter or use the 'ADD'-Button
+Step 4 : The 'ADD'-Button opens a new gui, where you can see all items. On the left are different categories. If an item is selected its background switch to green. If not the background is red.
+Step 5 : If you have chose all items you want to show, click the button 'Prices'. Each page shows up to 10 items.
+Step 6 : Behind each item is a red 'delete' button, which remove this item from your list.
