@@ -3,6 +3,7 @@ package com.nikijulHypixel;
 import org.lwjgl.input.Keyboard;
 
 import com.nikijulHypixel.bazaar.BazaarMain;
+import com.nikijulHypixel.config.ConfigApiKey;
 import com.nikijulHypixel.utils.Events;
 import com.nikijulHypixel.utils.KeyHandler;
 
@@ -41,6 +42,13 @@ public class NikijulHypixel {
 		/* Key-Binding */
 		ClientRegistry.registerKeyBinding(keyBinding);
 		FMLCommonHandler.instance().bus().register(new KeyHandler());
+		
+		
+		/* Make Config */
+		ConfigApiKey.init();
+		if(!ConfigApiKey.hasCategory("ApiKey")) {
+			ConfigApiKey.writeConfig("ApiKey", "ApiKey", "YOUR KEY");
+		}
 	}
 
 	@EventHandler

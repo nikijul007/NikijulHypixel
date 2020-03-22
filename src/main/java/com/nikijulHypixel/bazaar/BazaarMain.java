@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.nikijulHypixel.NikijulHypixel;
+import com.nikijulHypixel.config.ConfigApiKey;
 
 import net.minecraft.util.ResourceLocation;
 
@@ -16,20 +17,23 @@ public class BazaarMain {
 	public static void loadkey() {
 		String keyTemp = null;
 
-		try {
-			File file = new File("ApiKey.dat");
-			Scanner reader = new Scanner(file);
-
-			while (reader.hasNextLine()) {
-				keyTemp = reader.nextLine();
-				System.out.println(keyTemp);
-			}
-			reader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found!");
-		}
-
-		key = keyTemp;
+		
+		
+		
+//		try {
+//			File file = new File("ApiKey.dat");
+//			Scanner reader = new Scanner(file);
+//
+//			while (reader.hasNextLine()) {
+//				keyTemp = reader.nextLine();
+//				System.out.println(keyTemp);
+//			}
+//			reader.close();
+//		} catch (FileNotFoundException e) {
+//			System.out.println("File not found!");
+//		}
+//
+//		key = keyTemp;
 
 	}
 }
