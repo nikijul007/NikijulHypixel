@@ -7,10 +7,10 @@ import net.minecraftforge.common.config.Configuration;
 
 public class ConfigNikijulHypixel {
 
-	public static Configuration config;
-	public static String file = "config/NikijulHypixel.cfg";
+	private Configuration config;
+	private String file;
 
-	public static void init() {
+	public void init() {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
@@ -23,7 +23,7 @@ public class ConfigNikijulHypixel {
 
 	}
 
-	public static void removeConfig(String category) {
+	public void removeConfig(String category) {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
@@ -39,7 +39,7 @@ public class ConfigNikijulHypixel {
 	/*
 	 * Removes specific key in specific category from configuration file.
 	 */
-	public static void removeConfig(String category, String name) {
+	public void removeConfig(String category, String name) {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
@@ -52,7 +52,7 @@ public class ConfigNikijulHypixel {
 		}
 	}
 
-	public static String getString(String category, String name) {
+	public String getString(String category, String name) {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
@@ -67,7 +67,7 @@ public class ConfigNikijulHypixel {
 		return "";
 	}
 
-	public static void writeConfig(String category, String name, String value) {
+	public void writeConfig(String category, String name, String value) {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
@@ -81,7 +81,7 @@ public class ConfigNikijulHypixel {
 	}
 
 
-	public static boolean hasCategory(String category) {
+	public boolean hasCategory(String category) {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
@@ -94,7 +94,7 @@ public class ConfigNikijulHypixel {
 		return false;
 	}
 
-	public static boolean hasKey(String category, String name) {
+	public boolean hasKey(String category, String name) {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
@@ -109,11 +109,11 @@ public class ConfigNikijulHypixel {
 		return false;
 	}
 
-	public static void setFile(String filename) {
+	public void setFile(String filename) {
 		file = "config/" + filename;
 	}
 
-	public static String getFile() {
+	public String getFile() {
 		return file;
 	}
 

@@ -9,51 +9,47 @@ import java.util.Scanner;
 
 import com.nikijulHypixel.NikijulHypixel;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+
 public class ActivateItems {
-	private static ArrayList<String> selectedItems = new ArrayList<String>();
+	private ArrayList<String> selectedItems = new ArrayList<String>();
 
-	public static ArrayList<String> loadItems() {
-		String item = null;
-		ArrayList<String> items = new ArrayList<String>();
+	public ArrayList<String> loadItems() {
+		String items = null;
+		ArrayList<String> itemList = new ArrayList<String>();
 
-		try {
-			File file = new File(NikijulHypixel.MODID + ":" + BazaarMain.BAZAAR_RESSOURCES_PATH + "ShowedItems.dat");
-			Scanner reader = new Scanner(file);
-
-			while (reader.hasNextLine()) {
-				item = reader.nextLine();
-				items.add(item);
+		if(NikijulHypixel.configItems.hasCategory("items") & NikijulHypixel.configItems.hasKey("items", "Items")) {
+			items = NikijulHypixel.configItems.getString("items", "Items");
+			String[] itemArray = items.split(",");
+			
+			for(String item : itemArray ) {
+				itemList.add(item);
 			}
-			reader.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found!");
+		
+		
 		}
 
-		return items;
+		return itemList;
 	}
 
-	public static void saveItems() {
-		try {
-
-			File file = new File(NikijulHypixel.MODID + ":" + BazaarMain.BAZAAR_RESSOURCES_PATH + "ShowedItems.dat");
-			file.createNewFile();
-
-			FileWriter writer = new FileWriter(file);
-			BufferedWriter bWriter = new BufferedWriter(writer);
-
-			for (String item : selectedItems) {
-				bWriter.write(item);
-				bWriter.newLine();
-			}
-			bWriter.close();
-
-		} catch (Exception e) {
-			System.out.println("FEHLER!");
-
+	public void saveItems() {
+		String items = "";
+		if(NikijulHypixel.configItems.hasCategory("items")) {
+			NikijulHypixel.configItems.removeConfig("items");
 		}
+		
+		for(String item : selectedItems) {
+			items = items.concat(item + ",");
+		}
+		
+		NikijulHypixel.configItems.writeConfig("items", "Items", items);
+		
+		
 	}
 
-	public static void addItem(String name) {
+	public void addItem(String name) {
 		selectedItems = loadItems();
 		name = name.toUpperCase();
 		if (!selectedItems.contains(name)) {
@@ -62,7 +58,7 @@ public class ActivateItems {
 		saveItems();
 	}
 
-	public static void addItem(String name, int position) {
+	public void addItem(String name, int position) {
 		selectedItems = loadItems();
 		name = name.toUpperCase();
 
@@ -75,7 +71,7 @@ public class ActivateItems {
 		saveItems();
 	}
 
-	public static ArrayList<String> getSelectedItems() {
+	public ArrayList<String> getSelectedItems() {
 		selectedItems = loadItems();
 		return selectedItems;
 	}

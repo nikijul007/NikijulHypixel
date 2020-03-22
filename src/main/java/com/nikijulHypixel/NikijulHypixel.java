@@ -2,6 +2,7 @@ package com.nikijulHypixel;
 
 import org.lwjgl.input.Keyboard;
 
+import com.nikijulHypixel.bazaar.ActivateItems;
 import com.nikijulHypixel.bazaar.BazaarMain;
 import com.nikijulHypixel.config.ConfigNikijulHypixel;
 import com.nikijulHypixel.utils.Events;
@@ -23,7 +24,10 @@ public class NikijulHypixel {
 	public static final String MODID = "nikijulhypixel";
 	public static NikijulHypixel instance;
 	
-	public static ConfigNikijulHypixel configNikijulHypixel = new ConfigNikijulHypixel();;
+	public static ConfigNikijulHypixel configApiKey = new ConfigNikijulHypixel();
+	public static ConfigNikijulHypixel configItems = new ConfigNikijulHypixel();
+	
+	public static ActivateItems activateItems = new ActivateItems();
 	
 	public static KeyBinding keyBinding = new KeyBinding("keyBinding.openZealotGui", Keyboard.KEY_P,  "category.nikijul");
 	
@@ -38,17 +42,21 @@ public class NikijulHypixel {
 	public void init(FMLInitializationEvent event) {
 		/* Make Config */
 		
-		configNikijulHypixel.init();
-		if(!configNikijulHypixel.hasCategory("apikey")) {
-			configNikijulHypixel.writeConfig("apikey", "ApiKey", "YOUR KEY");
+		configApiKey.setFile("ApiKey.cfg");
+		configApiKey.init();
+		
+		configItems.setFile("ShowedItems.cfg");
+		configItems.init();
+		
+		if(!configApiKey.hasCategory("apikey")) {
+			configApiKey.writeConfig("apikey", "ApiKey", "YOUR KEY");
 		}
-		System.out.println(configNikijulHypixel.getString("apikey", "ApiKey"));
 		
 		
 		/* Events */
 		MinecraftForge.EVENT_BUS.register(new Events());
 		BazaarMain.loadkey();
-		System.out.println(BazaarMain.getKey());
+		System.out.println("KEY : " + BazaarMain.getKey());
 		
 		/* Key-Binding */
 		ClientRegistry.registerKeyBinding(keyBinding);

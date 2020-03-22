@@ -13,12 +13,8 @@ public class BazaarMain {
 
 	private static String key;
 
-	
-	
-	
-	
 	public static void loadkey() {
-		key = NikijulHypixel.configNikijulHypixel.getString("apikey", "ApiKey");
+		key = NikijulHypixel.configApiKey.getString("apikey", "ApiKey");
 	}
 	
 	public static String getKey() {

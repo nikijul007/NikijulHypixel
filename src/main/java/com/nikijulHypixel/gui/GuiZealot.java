@@ -3,7 +3,9 @@ package com.nikijulHypixel.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.bazaar.ActivateItems;
+import com.nikijulHypixel.config.ConfigNikijulHypixel;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -14,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiZealot extends GuiScreen {
 
-	public static ArrayList<String> itemList = ActivateItems.getSelectedItems();
+	private static ArrayList<String> itemList;
 	
 	private int xSize = 176;
 	private int ySize = 166;
@@ -27,6 +29,11 @@ public class GuiZealot extends GuiScreen {
 
 	@Override
 	public void initGui() {
+		
+		NikijulHypixel.activateItems.loadItems();
+		itemList = NikijulHypixel.activateItems.getSelectedItems();
+		
+		
 		int length = itemList.size();
 
 		lastPageItemAmount = length % itemsPerPage;

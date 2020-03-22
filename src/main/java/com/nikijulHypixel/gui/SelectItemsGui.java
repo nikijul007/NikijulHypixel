@@ -2,6 +2,7 @@ package com.nikijulHypixel.gui;
 
 import java.io.IOException;
 
+import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.bazaar.ActivateItems;
 
 import net.minecraft.client.Minecraft;
@@ -16,18 +17,24 @@ public class SelectItemsGui extends GuiScreen {
 
 	private int width = 176;
 	private int height = 166;
+	private int componentID;
 
 	private GuiTextField textField;
 
 	@Override
 	public void initGui() {
+		
+		buttonList.clear();
+		componentID = 0;
 		buttonList.add(
-				new GuiButton(0, (super.width - width) / 2 + 40, (super.height - height) / 2 + 100, 100, 20, "Enter"));
-		buttonList.add(new GuiButton(1, (super.width - width) / 2 + 40, (super.height - height) / 2 + 130, 100, 20,
+				new GuiButton(componentID, (super.width - width) / 2 + 40, (super.height - height) / 2 + 100, 100, 20, "Enter"));
+		componentID++;
+		buttonList.add(new GuiButton(componentID, (super.width - width) / 2 + 40, (super.height - height) / 2 + 130, 100, 20,
 				"Show Price"));
-
-		textField = new GuiTextField(2, fontRendererObj, (super.width - width) / 2 + 40,
+		componentID++;
+		textField = new GuiTextField(componentID, fontRendererObj, (super.width - width) / 2 + 40,
 				(super.height - height) / 2 + 50, 100, 20);
+		componentID++;
 		textField.setMaxStringLength(25);
 		textField.setFocused(true);
 		textField.setCanLoseFocus(false);
@@ -69,9 +76,12 @@ public class SelectItemsGui extends GuiScreen {
 		switch (button.id) {
 		case 0:
 			String input = textField.getText();
-			ActivateItems.addItem(input);
-			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
-					new ChatComponentText(EnumChatFormatting.DARK_BLUE + "Item: " + input + " hinzugefügt!"));
+			if(!input.equalsIgnoreCase("")) {
+			NikijulHypixel.activateItems.addItem(input);
+			System.out.println("Wie oft geht das?");
+			textField.setText("");
+			}
+			
 			break;
 		case 1:
 			Minecraft.getMinecraft().displayGuiScreen(new GuiZealot());

@@ -12,6 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent.KeyboardInputEvent;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class Events {
