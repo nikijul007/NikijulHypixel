@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 public class GuiZealot extends GuiScreen {
 
 	private static ArrayList<String> itemList;
-	
+
 	private int xSize = 176;
 	private int ySize = 166;
 	private int yOffset = 0;
@@ -29,11 +29,10 @@ public class GuiZealot extends GuiScreen {
 
 	@Override
 	public void initGui() {
-		
+
 		NikijulHypixel.activateItems.loadItems();
 		itemList = NikijulHypixel.activateItems.getSelectedItems();
-		
-		
+
 		int length = itemList.size();
 
 		lastPageItemAmount = length % itemsPerPage;
@@ -63,20 +62,35 @@ public class GuiZealot extends GuiScreen {
 
 		drawTexturedModalRect((this.width - this.xSize) / 2, (this.height - this.ySize) / 2, 0, 0, xSize, ySize);
 
-		int firstItem = (pageNumber - 1) * itemsPerPage;
-		if (pageNumber < pages) {
+		if (NikijulHypixel.configApiKey.getString("apikey", "ApiKey") == null
+				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").equals("YOUR KEY")
+				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").equals("")
+				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").length() != 36){
+			fontRendererObj.drawString("You need an ApiKey to use this mod.", (this.width - this.xSize) / 2 + 10,
+							(this.height - this.ySize) / 2 + 10 + yOffset, 0xff0000);
+			yOffset += 15;
+			fontRendererObj.drawString("Go to on the HypixelServer an get Key by /api!", (this.width - this.xSize) / 2 + 10,
+					(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+			yOffset += 15;
+			fontRendererObj.drawString("Copy the key in ApiKey.cfg instead of 'YOUR KEY'!", (this.width - this.xSize) / 2 + 10,
+					(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
 
-			for (int i = firstItem; i < firstItem + itemsPerPage; i++) {
-				fontRendererObj.drawString(itemList.get(i), (this.width - this.xSize) / 2 + 10,
-						(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
-				yOffset += 15;
-			}
 		} else {
-			for (int i = firstItem; i < firstItem + lastPageItemAmount; i++) {
-				fontRendererObj.drawString(itemList.get(i), (this.width - this.xSize) / 2 + 10,
-						(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
-				yOffset += 15;
+			int firstItem = (pageNumber - 1) * itemsPerPage;
+			if (pageNumber < pages) {
 
+				for (int i = firstItem; i < firstItem + itemsPerPage; i++) {
+					fontRendererObj.drawString(itemList.get(i), (this.width - this.xSize) / 2 + 10,
+							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					yOffset += 15;
+				}
+			} else {
+				for (int i = firstItem; i < firstItem + lastPageItemAmount; i++) {
+					fontRendererObj.drawString(itemList.get(i), (this.width - this.xSize) / 2 + 10,
+							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					yOffset += 15;
+
+				}
 			}
 		}
 
@@ -95,7 +109,7 @@ public class GuiZealot extends GuiScreen {
 		case 0:
 			pageNumber = 1;
 			Minecraft.getMinecraft().displayGuiScreen(new SelectItemsGui());
-			
+
 			break;
 		case 2:
 			if (pageNumber > 1) {
@@ -109,7 +123,7 @@ public class GuiZealot extends GuiScreen {
 				pageNumber++;
 				initGui();
 			}
-			
+
 			break;
 		default:
 			break;
