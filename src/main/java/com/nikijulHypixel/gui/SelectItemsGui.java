@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.bazaar.ActivateItems;
+import com.nikijulHypixel.bazaar.BazaarMain;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -17,7 +18,7 @@ public class SelectItemsGui extends GuiScreen {
 
 	private int width = 176;
 	private int height = 166;
-	private int componentID;
+
 
 	private GuiTextField textField;
 
@@ -25,16 +26,18 @@ public class SelectItemsGui extends GuiScreen {
 	public void initGui() {
 		
 		buttonList.clear();
-		componentID = 0;
+		
 		buttonList.add(
-				new GuiButton(componentID, (super.width - width) / 2 + 40, (super.height - height) / 2 + 100, 100, 20, "Enter"));
-		componentID++;
-		buttonList.add(new GuiButton(componentID, (super.width - width) / 2 + 40, (super.height - height) / 2 + 130, 100, 20,
+				new GuiButton(0, (super.width - width) / 2 + 40, (super.height - height) / 2 + 100, 100, 20, "Enter"));
+		
+		buttonList.add(new GuiButton(1, (super.width - width) / 2 + 40, (super.height - height) / 2 + 120, 100, 20,
 				"Show Price"));
-		componentID++;
-		textField = new GuiTextField(componentID, fontRendererObj, (super.width - width) / 2 + 40,
+		
+		buttonList.add(new GuiButton(2, (super.width - width)/2 + 40, (super.height - height) / 2 + 140, 100, 20, "Category"));
+		
+		textField = new GuiTextField(3, fontRendererObj, (super.width - width) / 2 + 40,
 				(super.height - height) / 2 + 50, 100, 20);
-		componentID++;
+		
 		textField.setMaxStringLength(25);
 		textField.setFocused(true);
 		textField.setCanLoseFocus(false);
@@ -78,13 +81,16 @@ public class SelectItemsGui extends GuiScreen {
 			String input = textField.getText();
 			if(!input.equalsIgnoreCase("")) {
 			NikijulHypixel.activateItems.addItem(input);
-			System.out.println("Wie oft geht das?");
 			textField.setText("");
 			}
 			
 			break;
 		case 1:
+			NikijulHypixel.bazaarMain.refreshPrices();
 			Minecraft.getMinecraft().displayGuiScreen(new GuiZealot());
+			break;
+		case 2: 
+			Minecraft.getMinecraft().displayGuiScreen(new GuiCategories());
 			break;
 		default:
 			break;

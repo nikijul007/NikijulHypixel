@@ -26,6 +26,7 @@ public class NikijulHypixel {
 	
 	public static ConfigNikijulHypixel configApiKey = new ConfigNikijulHypixel();
 	public static ConfigNikijulHypixel configItems = new ConfigNikijulHypixel();
+	public static BazaarMain bazaarMain = new BazaarMain();
 	
 	public static ActivateItems activateItems = new ActivateItems();
 	
@@ -55,8 +56,8 @@ public class NikijulHypixel {
 		
 		/* Events */
 		MinecraftForge.EVENT_BUS.register(new Events());
-		BazaarMain.loadkey();
-		System.out.println("KEY : " + BazaarMain.getKey());
+		bazaarMain.loadkey();
+		System.out.println("KEY : " + bazaarMain.getKey());
 		
 		/* Key-Binding */
 		ClientRegistry.registerKeyBinding(keyBinding);
