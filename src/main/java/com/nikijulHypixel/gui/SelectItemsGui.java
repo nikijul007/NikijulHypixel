@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.bazaar.ActivateItems;
 import com.nikijulHypixel.bazaar.BazaarMain;
+import com.nikijulHypixel.gui.category.GuiFarming;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -16,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class SelectItemsGui extends GuiScreen {
 
+	
 	private int width = 176;
 	private int height = 166;
 
@@ -90,7 +92,7 @@ public class SelectItemsGui extends GuiScreen {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiZealot());
 			break;
 		case 2: 
-			Minecraft.getMinecraft().displayGuiScreen(new GuiCategories());
+			Minecraft.getMinecraft().displayGuiScreen(new GuiFarming());
 			break;
 		default:
 			break;

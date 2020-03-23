@@ -2,8 +2,14 @@ package com.nikijulHypixel.gui;
 
 import java.io.IOException;
 
+import com.nikijulHypixel.NikijulHypixel;
+import com.nikijulHypixel.gui.category.GuiFarming;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiCategories extends GuiScreen {
@@ -11,12 +17,16 @@ public class GuiCategories extends GuiScreen {
 	private int xSize = 300;
 	private int ySize = 200;
 
+	private ResourceLocation buttonTexture = new ResourceLocation(NikijulHypixel.MODID + ":textures/gui/apple.png");
+	
 	private int bigButtonWidth = 50;
 	private int bigButtonHeight = 20;
+	
+	private int smallButtonSize = 20;
 
 	@Override
 	public void initGui() {
-		buttonList.clear();
+		
 
 		buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 0 + 1 * 5,
 				bigButtonWidth, bigButtonHeight, "FARMING"));
@@ -39,9 +49,6 @@ public class GuiCategories extends GuiScreen {
 		buttonList.add(new GuiButton(6, (this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 6 + 7 * 5,
 				bigButtonWidth, bigButtonHeight, "HYPIXEL"));
 		
-		buttonList.add(new TextureButton(7, (this.width - this.xSize) / 2 + 5 + bigButtonWidth, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 0 + 1 * 5, 
-				128, 128, "buttonTest.png"));
-
 		super.initGui();
 	}
 
@@ -52,6 +59,7 @@ public class GuiCategories extends GuiScreen {
 				.bindTexture(new ResourceLocation("nikijulhypixel:textures/gui/categoryBackground.png"));
 
 		drawTexturedModalRect((this.width - this.xSize) / 2, (this.height - this.ySize) / 2 - 15, 0, 0, xSize, ySize);
+		
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
@@ -62,7 +70,14 @@ public class GuiCategories extends GuiScreen {
 
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
-
+		switch (button.id) {
+		case 0 : 
+			Minecraft.getMinecraft().displayGuiScreen(new GuiFarming());
+			System.out.println("NEUES GUI!!!");
+			break;
+		default:
+			break;
+		}
 		super.actionPerformed(button);
 	}
 }
