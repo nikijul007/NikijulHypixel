@@ -81,6 +81,7 @@ public class SelectItemsGui extends GuiScreen {
 		switch (button.id) {
 		case 0:
 			String input = textField.getText();
+			
 			if(!input.equalsIgnoreCase("")) {
 			NikijulHypixel.activateItems.addItem(input);
 			textField.setText("");

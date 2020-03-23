@@ -33,8 +33,7 @@ public class TextureButton extends GuiButton {
 			GlStateManager.pushMatrix();
 
 			GlStateManager.scale(1f / 12.8f, 1f / 12.8f, 1f);
-
-			drawTexturedModalRect( (int) (this.x * 12.8), (int) (this.y * 12.8), 0, 0, 256, 256);
+			drawTexturedModalRect((int) (this.x * 12.8), (int) (this.y * 12.8), 0, 0, 256, 256);
 			GlStateManager.popMatrix();
 
 			this.hovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width
