@@ -6,17 +6,26 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.config.ConfigNikijulHypixel;
 
+import jdk.nashorn.internal.parser.JSONParser;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.util.JsonBlendingMode;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import scala.util.parsing.json.JSON;
+import scala.util.parsing.json.JSONObject;
 
 public class BazaarMain {
 
@@ -24,7 +33,13 @@ public class BazaarMain {
 	
 	private String key;
 	private long lastTimestamp = 0;
-
+	
+	private String firstBuy = "buyPrice\":";
+	private String lastBuy = ",\"buyVol";
+	
+	private String firstSell = "sellPrice\":";
+	private String lastSell = ",\"sellVol";
+	
 	private ArrayList<AllItems> selectedItems = new ArrayList<AllItems>();
 
 	public void loadkey() {
@@ -65,8 +80,19 @@ public class BazaarMain {
 		}
 	}
 
-	private void writeQuickStatus() {
-
+	private void writeQuickStatus(String s, String itemName) {
+		itemName = itemName.toLowerCase();
+		String buyPrice = StringUtils.substringBetween(s, firstBuy, lastBuy);
+		String sellPrice = StringUtils.substringBetween(s, firstSell, lastSell);
+		
+		double buy = toDouble(buyPrice);
+		double sell = toDouble(sellPrice);
+		
+		System.out.println(buy);
+		System.out.println(sell);
+		
+		NikijulHypixel.configItemsPrices.writeConfig(itemName, "BuyPrice", buyPrice);
+		NikijulHypixel.configItemsPrices.writeConfig(itemName, "SellPrice", sellPrice);
 	}
 
 	private void sendRequest(String itemID, String itemName) {
@@ -96,7 +122,9 @@ public class BazaarMain {
 				br.close();
 			}	
 			
-			NikijulHypixel.configTempAllData.writeConfig("items", itemName, responseContent.toString());
+			
+			writeQuickStatus(responseContent.toString(), itemName);
+			//NikijulHypixel.configTempAllData.writeConfig("items", itemName, responseContent.toString());
 					
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -104,6 +132,19 @@ public class BazaarMain {
 			connection.disconnect();
 			//responseContent
 		}
+	}
+	
+	private double toDouble(String s) {
+		double number;
+		NumberFormat nf = NumberFormat.getInstance();
+		
+		number =  Double.parseDouble(s);
+		nf.setMaximumFractionDigits(1);
+		
+		number = Double.parseDouble(nf.format(number));
+		
+		return number;
+		
 	}
 
 }

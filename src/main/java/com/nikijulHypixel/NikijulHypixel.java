@@ -27,8 +27,7 @@ public class NikijulHypixel {
 	public static ConfigNikijulHypixel configApiKey = new ConfigNikijulHypixel();
 	
 	public static ConfigNikijulHypixel configItems = new ConfigNikijulHypixel();
-	public static ConfigNikijulHypixel configTempAllData = new ConfigNikijulHypixel();
-	public static ConfigNikijulHypixel configQuickStatus = new ConfigNikijulHypixel();
+	public static ConfigNikijulHypixel configItemsPrices = new ConfigNikijulHypixel();
 	
 	
 	public static BazaarMain bazaarMain = new BazaarMain();
@@ -54,11 +53,8 @@ public class NikijulHypixel {
 		configItems.setFile("ShowedItems.cfg");
 		configItems.init();
 		
-		configTempAllData.setFile("TempAllData.cfg");
-		configTempAllData.init();
-		
-		configQuickStatus.setFile("Quickstatus.cfg");
-		configQuickStatus.init();
+		configItemsPrices.setFile("ItemsPrices.cfg");
+		configItemsPrices.init();
 		
 		if(!configApiKey.hasCategory("apikey")) {
 			configApiKey.writeConfig("apikey", "ApiKey", "YOUR KEY");
