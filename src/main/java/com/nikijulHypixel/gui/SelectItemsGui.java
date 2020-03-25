@@ -39,7 +39,7 @@ public class SelectItemsGui extends GuiScreen {
 		textField = new GuiTextField(3, fontRendererObj, (super.width - width) / 2 + 40,
 				(super.height - height) / 2 + 50, 100, 20);
 		
-		textField.setMaxStringLength(25);
+		textField.setMaxStringLength(80);
 		textField.setFocused(true);
 		textField.setCanLoseFocus(false);
 
@@ -89,7 +89,7 @@ public class SelectItemsGui extends GuiScreen {
 			break;
 		case 1:
 			NikijulHypixel.bazaarManager.refreshPrices();
-			Minecraft.getMinecraft().displayGuiScreen(new GuiZealot());
+			Minecraft.getMinecraft().displayGuiScreen(new GuiPrices());
 			break;
 		case 2: 
 			Minecraft.getMinecraft().displayGuiScreen(new GuiFarming());

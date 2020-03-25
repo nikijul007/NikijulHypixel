@@ -20,15 +20,14 @@ public class ActivateItems {
 		String items = null;
 		ArrayList<String> itemList = new ArrayList<String>();
 
-		if(NikijulHypixel.configItems.hasCategory("items") & NikijulHypixel.configItems.hasKey("items", "Items")) {
+		if (NikijulHypixel.configItems.hasCategory("items") & NikijulHypixel.configItems.hasKey("items", "Items")) {
 			items = NikijulHypixel.configItems.getString("items", "Items");
 			String[] itemArray = items.split(",");
-			
-			for(String item : itemArray ) {
+
+			for (String item : itemArray) {
 				itemList.add(item);
 			}
-		
-		
+
 		}
 
 		return itemList;
@@ -36,39 +35,50 @@ public class ActivateItems {
 
 	public void saveItems() {
 		String items = "";
-		if(NikijulHypixel.configItems.hasCategory("items")) {
+		if (NikijulHypixel.configItems.hasCategory("items")) {
 			NikijulHypixel.configItems.removeConfig("items");
 		}
-		
-		for(String item : selectedItems) {
+
+		for (String item : selectedItems) {
 			items = items.concat(item + ",");
 		}
-		
+
 		NikijulHypixel.configItems.writeConfig("items", "Items", items);
-		
-		
+
 	}
 
 	public void addItem(String name) {
 		selectedItems = loadItems();
 		name = name.toUpperCase();
-		if (!selectedItems.contains(name)) {
-			selectedItems.add(name);
+		try {
+			AllItems.valueOf(name);
+			if (!selectedItems.contains(name)) {
+				selectedItems.add(name);
+				saveItems();
+			}
+		} catch (IllegalArgumentException e) {
+			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
+					new ChatComponentText(EnumChatFormatting.RED + name + " isn't available in the shop!"));
 		}
-		saveItems();
+
 	}
 
 	public void addItem(String name, int position) {
 		selectedItems = loadItems();
 		name = name.toUpperCase();
 
-		if (!selectedItems.contains(name)) {
-			selectedItems.add(position - 1, name);
+		if (AllItems.valueOf(name) != null) {
+			if (!selectedItems.contains(name)) {
+				selectedItems.add(position - 1, name);
+			} else {
+				selectedItems.remove(name);
+				selectedItems.add(position - 1, name);
+			}
+			saveItems();
 		} else {
-			selectedItems.remove(name);
-			selectedItems.add(position - 1, name);
+			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
+					new ChatComponentText(EnumChatFormatting.RED + name + " isn't available in the shop!"));
 		}
-		saveItems();
 	}
 
 	public ArrayList<String> getSelectedItems() {

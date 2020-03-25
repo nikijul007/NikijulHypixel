@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.ibm.icu.impl.IllegalIcuArgumentException;
 import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.config.ConfigNikijulHypixel;
 
@@ -32,16 +33,16 @@ import scala.util.parsing.json.JSONObject;
 public class BazaarManager {
 
 	private static HttpURLConnection connection;
-	
+
 	private String key;
 	private long lastTimestamp = 0;
-	
+
 	private String firstBuy = "buyPrice\":";
 	private String lastBuy = ",\"buyVol";
-	
+
 	private String firstSell = "sellPrice\":";
 	private String lastSell = ",\"sellVol";
-	
+
 	private ArrayList<AllItems> selectedItems = new ArrayList<AllItems>();
 
 	public void loadkey() {
@@ -61,10 +62,15 @@ public class BazaarManager {
 			loadkey();
 			return;
 		}
-		//ÄNDERN diff >= 60;
+		// ÄNDERN diff >= 60;
 		if (diff >= 5) {
 			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Aktualisiert!"));
 			quickStatus();
+
+			// for(AllItems items : selectedItems) {
+			// writeQuickStatus(items.name());
+			// }
+
 			lastTimestamp = currentTimestamp;
 		} else {
 			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
@@ -76,33 +82,47 @@ public class BazaarManager {
 		ArrayList<String> selected = NikijulHypixel.activateItems.loadItems();
 		selectedItems.clear();
 		for (String s : selected) {
-			AllItems item = AllItems.valueOf(s);
-			selectedItems.add(item);
-			sendRequest(item.getID(), item.name());
+			try {
+				AllItems item = AllItems.valueOf(s);
+				if (item != null) {
+					selectedItems.add(item);
+					sendRequest(item.getID(), item.name());
+				}
+
+			} catch (IllegalArgumentException e) {
+			}
 
 		}
 	}
 
 	private void writeQuickStatus(String s, String itemName) {
+		// String s = NikijulHypixel.configTemp.getString(itemName, "status");
 		itemName = itemName.toLowerCase();
-		System.out.println("HI");
-		
+
 		String buyPriceString = StringUtils.substringBetween(s, firstBuy, lastBuy);
 		String sellPriceString = StringUtils.substringBetween(s, firstSell, lastSell);
-		
+
 		double buyPrice = toDouble(buyPriceString);
 		double sellPrice = toDouble(sellPriceString);
-		
-		double diff =  (sellPrice - 0.1) - (buyPrice + 0.1);
+
+		double diff = (sellPrice - 0.1) - (buyPrice + 0.1);
 		diff = diff - (diff * 0.01);
 		diff = formatDouble(diff);
-		
-		if(NikijulHypixel.configItemsPrices.hasCategory(itemName)) {
+
+		if (NikijulHypixel.configItemsPrices.hasCategory(itemName)) {
 			NikijulHypixel.configItems.removeConfig(itemName);
 		}
-		NikijulHypixel.configItemsPrices.writeConfig(itemName, "BuyPrice", buyPrice);
-		NikijulHypixel.configItemsPrices.writeConfig(itemName, "SellPrice", sellPrice);
-		NikijulHypixel.configItemsPrices.writeConfig(itemName, "Profit", diff);
+		NikijulHypixel.configItemsPrices.writeConfig(itemName, "BuyPrice", buyPrice + "");
+		NikijulHypixel.configItemsPrices.writeConfig(itemName, "SellPrice", sellPrice + "");
+		NikijulHypixel.configItemsPrices.writeConfig(itemName, "Profit", diff + "");
+	}
+
+	private void saveRequest(String s, String itemName) {
+		itemName = itemName.toLowerCase();
+		if (NikijulHypixel.configTemp.hasCategory(itemName)) {
+			NikijulHypixel.configTemp.removeConfig(itemName);
+		}
+		NikijulHypixel.configTemp.writeConfig(itemName, "status", s);
 	}
 
 	private void sendRequest(String itemID, String itemName) {
@@ -112,62 +132,63 @@ public class BazaarManager {
 		try {
 			URL url = new URL("https://api.hypixel.net/skyblock/bazaar/product?key=" + key + "&productId=" + itemID);
 			connection = (HttpURLConnection) url.openConnection();
-			
+
 			connection.setRequestMethod("GET");
 			connection.setConnectTimeout(5000);
 			connection.setReadTimeout(5000);
 			int status = connection.getResponseCode();
-			
-			if(status > 200) {
+
+			if (status > 200) {
 				br = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-				while((line = br.readLine()) !=null) {
+				while ((line = br.readLine()) != null) {
 					responseContent.append(line);
 				}
 				br.close();
-			}else {
+			} else {
 				br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-				while((line = br.readLine()) !=null) {
+				while ((line = br.readLine()) != null) {
 					responseContent.append(line);
 				}
 				br.close();
-			}	
-			
-			System.out.println("Abfrage erfolgt!");
+			}
+
+			// saveRequest(responseContent.toString(), itemName);
+			// NikijulHypixel.configTempAllData.writeConfig("items", itemName,
+			// responseContent.toString());
 			writeQuickStatus(responseContent.toString(), itemName);
-			//NikijulHypixel.configTempAllData.writeConfig("items", itemName, responseContent.toString());
-					
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
 			connection.disconnect();
-			//responseContent
+			// responseContent
 		}
 	}
-	
+
 	private double toDouble(String s) {
 		double number;
-		
-		
-		System.out.println(s);
-		number =  Double.parseDouble(s);
-		
+
+		number = Double.parseDouble(s);
+
 		number = formatDouble(number);
-		
+
 		return number;
 	}
-	
+
 	private double formatDouble(double number) {
 		DecimalFormat df = new DecimalFormat("######0.0");
 		DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
 		dfs.setDecimalSeparator('.');
 		df.setDecimalFormatSymbols(dfs);
 		df.setMaximumFractionDigits(1);
-		
+
 		String s = df.format(number);
-		//number = Double.parseDouble(nf.format(number));
-		System.out.println(s);
+
 		number = Double.parseDouble(s);
 		return number;
+	}
+
+	public ArrayList<AllItems> getSelectedItems() {
+		return selectedItems;
 	}
 
 }

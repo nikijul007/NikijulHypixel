@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.bazaar.ActivateItems;
+import com.nikijulHypixel.bazaar.AllItems;
 import com.nikijulHypixel.config.ConfigNikijulHypixel;
 
 import net.minecraft.client.Minecraft;
@@ -14,12 +15,12 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiZealot extends GuiScreen {
+public class GuiPrices extends GuiScreen {
 
-	private static ArrayList<String> itemList;
+	private static ArrayList<AllItems> itemList;
 
-	private int xSize = 176;
-	private int ySize = 166;
+	private int xSize = 400;
+	private int ySize = 200;
 	private int yOffset = 0;
 
 	private int itemsPerPage = 10;
@@ -31,7 +32,7 @@ public class GuiZealot extends GuiScreen {
 	public void initGui() {
 
 		NikijulHypixel.activateItems.loadItems();
-		itemList = NikijulHypixel.activateItems.getSelectedItems();
+		itemList = NikijulHypixel.bazaarManager.getSelectedItems();
 
 		int length = itemList.size();
 
@@ -80,14 +81,49 @@ public class GuiZealot extends GuiScreen {
 			if (pageNumber < pages) {
 
 				for (int i = firstItem; i < firstItem + itemsPerPage; i++) {
-					fontRendererObj.drawString(itemList.get(i), (this.width - this.xSize) / 2 + 10,
+					String name = itemList.get(i).name().toLowerCase();
+					String sellPrice = NikijulHypixel.configItemsPrices.getString(name, "SellPrice");
+					String buyPrice = NikijulHypixel.configItemsPrices.getString(name, "BuyPrice");
+					String profit = NikijulHypixel.configItemsPrices.getString(name, "Profit");
+					
+					
+					fontRendererObj.drawString(name, (this.width - this.xSize) / 2 + 10,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					
+					fontRendererObj.drawString(sellPrice, (this.width - this.xSize) / 2 + 10,
+							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					
+					fontRendererObj.drawString(buyPrice, (this.width - this.xSize) / 2 + 10,
+							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					
+					fontRendererObj.drawString(profit, (this.width - this.xSize) / 2 + 10,
+							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					
 					yOffset += 15;
 				}
 			} else {
 				for (int i = firstItem; i < firstItem + lastPageItemAmount; i++) {
-					fontRendererObj.drawString(itemList.get(i), (this.width - this.xSize) / 2 + 10,
+					String name = itemList.get(i).name().toLowerCase();
+					String sellPrice = NikijulHypixel.configItemsPrices.getString(name, "SellPrice");
+					String buyPrice = NikijulHypixel.configItemsPrices.getString(name, "BuyPrice");
+					String profit = NikijulHypixel.configItemsPrices.getString(name, "Profit");
+					
+					int sellPriceWidth = fontRendererObj.getStringWidth(sellPrice);
+					int buyPriceWidth = fontRendererObj.getStringWidth(buyPrice);
+					int profitWidth = fontRendererObj.getStringWidth(profit);
+					
+					fontRendererObj.drawString(name, (this.width - this.xSize) / 2 + 10,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					
+					fontRendererObj.drawString(buyPrice, (this.width - this.xSize) / 2 + 10 + 250 - buyPriceWidth,
+							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					
+					fontRendererObj.drawString(sellPrice, (this.width - this.xSize) / 2 + 10 + 320 - sellPriceWidth,
+							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					
+					fontRendererObj.drawString(profit, (this.width - this.xSize) / 2 + 10 + 380 - profitWidth,
+							(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					
 					yOffset += 15;
 
 				}

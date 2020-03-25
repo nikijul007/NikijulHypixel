@@ -3,7 +3,6 @@ package com.nikijulHypixel.utils;
 import org.lwjgl.input.Keyboard;
 
 import com.nikijulHypixel.NikijulHypixel;
-import com.nikijulHypixel.gui.GuiZealot;
 import com.nikijulHypixel.gui.SelectItemsGui;
 
 import net.minecraft.client.Minecraft;
