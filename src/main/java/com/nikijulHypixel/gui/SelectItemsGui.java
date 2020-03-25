@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -18,7 +19,7 @@ public class SelectItemsGui extends GuiScreen {
 
 	
 	private int width = 176;
-	private int height = 166;
+	private int height = 180;
 
 
 	private GuiTextField textField;
@@ -29,15 +30,15 @@ public class SelectItemsGui extends GuiScreen {
 		buttonList.clear();
 		
 		buttonList.add(
-				new GuiButton(0, (super.width - width) / 2 + 40, (super.height - height) / 2 + 100, 100, 20, "Enter"));
+				new GuiButton(0, (super.width - width) / 2 + 40, (super.height - height) / 2 + 90, 100, 20, "Enter"));
 		
-		buttonList.add(new GuiButton(1, (super.width - width) / 2 + 40, (super.height - height) / 2 + 120, 100, 20,
+		buttonList.add(new GuiButton(1, (super.width - width) / 2 + 40, (super.height - height) / 2 + 110, 100, 20,
 				"Show Price"));
 		
-		buttonList.add(new GuiButton(2, (super.width - width)/2 + 40, (super.height - height) / 2 + 140, 100, 20, "Category"));
+		buttonList.add(new GuiButton(2, (super.width - width)/2 + 40, (super.height - height) / 2 + 130, 100, 20, "Category"));
 		
 		textField = new GuiTextField(3, fontRendererObj, (super.width - width) / 2 + 40,
-				(super.height - height) / 2 + 50, 100, 20);
+				(super.height - height) / 2 + 40, 100, 20);
 		
 		textField.setMaxStringLength(80);
 		textField.setFocused(true);
@@ -62,7 +63,13 @@ public class SelectItemsGui extends GuiScreen {
 		// drawDefaultBackground();
 
 		this.mc.getTextureManager().bindTexture(new ResourceLocation("nikijulhypixel:textures/gui/background.png"));
+		
+		GlStateManager.pushMatrix();
+
+		GlStateManager.scale(1f * 1f, 1f * 1.3f, 1f);
 		drawTexturedModalRect((super.width - width) / 2, (super.height - height) / 2, 0, 0, width, height);
+		GlStateManager.popMatrix();
+		//drawTexturedModalRect((super.width - width) / 2, (super.height - height) / 2, 0, 0, width, height);
 
 		textField.drawTextBox();
 
