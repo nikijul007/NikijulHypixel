@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,7 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import scala.util.parsing.json.JSON;
 import scala.util.parsing.json.JSONObject;
 
-public class BazaarMain {
+public class BazaarManager {
 
 	private static HttpURLConnection connection;
 	
@@ -59,8 +61,8 @@ public class BazaarMain {
 			loadkey();
 			return;
 		}
-
-		if (diff >= 60) {
+		//ÄNDERN diff >= 60;
+		if (diff >= 5) {
 			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Aktualisiert!"));
 			quickStatus();
 			lastTimestamp = currentTimestamp;
@@ -72,6 +74,7 @@ public class BazaarMain {
 
 	private void quickStatus() {
 		ArrayList<String> selected = NikijulHypixel.activateItems.loadItems();
+		selectedItems.clear();
 		for (String s : selected) {
 			AllItems item = AllItems.valueOf(s);
 			selectedItems.add(item);
@@ -82,17 +85,24 @@ public class BazaarMain {
 
 	private void writeQuickStatus(String s, String itemName) {
 		itemName = itemName.toLowerCase();
-		String buyPrice = StringUtils.substringBetween(s, firstBuy, lastBuy);
-		String sellPrice = StringUtils.substringBetween(s, firstSell, lastSell);
+		System.out.println("HI");
 		
-		double buy = toDouble(buyPrice);
-		double sell = toDouble(sellPrice);
+		String buyPriceString = StringUtils.substringBetween(s, firstBuy, lastBuy);
+		String sellPriceString = StringUtils.substringBetween(s, firstSell, lastSell);
 		
-		System.out.println(buy);
-		System.out.println(sell);
+		double buyPrice = toDouble(buyPriceString);
+		double sellPrice = toDouble(sellPriceString);
 		
+		double diff =  (sellPrice - 0.1) - (buyPrice + 0.1);
+		diff = diff - (diff * 0.01);
+		diff = formatDouble(diff);
+		
+		if(NikijulHypixel.configItemsPrices.hasCategory(itemName)) {
+			NikijulHypixel.configItems.removeConfig(itemName);
+		}
 		NikijulHypixel.configItemsPrices.writeConfig(itemName, "BuyPrice", buyPrice);
 		NikijulHypixel.configItemsPrices.writeConfig(itemName, "SellPrice", sellPrice);
+		NikijulHypixel.configItemsPrices.writeConfig(itemName, "Profit", diff);
 	}
 
 	private void sendRequest(String itemID, String itemName) {
@@ -122,7 +132,7 @@ public class BazaarMain {
 				br.close();
 			}	
 			
-			
+			System.out.println("Abfrage erfolgt!");
 			writeQuickStatus(responseContent.toString(), itemName);
 			//NikijulHypixel.configTempAllData.writeConfig("items", itemName, responseContent.toString());
 					
@@ -136,15 +146,28 @@ public class BazaarMain {
 	
 	private double toDouble(String s) {
 		double number;
-		NumberFormat nf = NumberFormat.getInstance();
 		
+		
+		System.out.println(s);
 		number =  Double.parseDouble(s);
-		nf.setMaximumFractionDigits(1);
 		
-		number = Double.parseDouble(nf.format(number));
+		number = formatDouble(number);
 		
 		return number;
+	}
+	
+	private double formatDouble(double number) {
+		DecimalFormat df = new DecimalFormat("######0.0");
+		DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
+		dfs.setDecimalSeparator('.');
+		df.setDecimalFormatSymbols(dfs);
+		df.setMaximumFractionDigits(1);
 		
+		String s = df.format(number);
+		//number = Double.parseDouble(nf.format(number));
+		System.out.println(s);
+		number = Double.parseDouble(s);
+		return number;
 	}
 
 }

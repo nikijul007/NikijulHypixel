@@ -66,13 +66,43 @@ public class ConfigNikijulHypixel {
 		}
 		return "";
 	}
+	
+	public double getDouble(String category, String key) {
+		config = new Configuration(new File(file));
+		try {
+			config.load();
+			if (config.getCategory(category).containsKey(key)) {
+				return config.get(category, key, 0D).getDouble();
+			}
+		} catch (Exception e) {
+			System.out.println("Cannot load configuration file!");
+		} finally {
+			config.save();
+		}
+		return 0D;
+	}
 
+	//String
 	public void writeConfig(String category, String name, String value) {
 		config = new Configuration(new File(file));
 		try {
 			config.load();
 			String set = config.get(category, name, value).getString();
 			config.getCategory(category).get(name).set(value);
+		} catch (Exception e) {
+			System.out.println("Cannot load configuration file!");
+		} finally {
+			config.save();
+		}
+	}
+	
+	//double
+	public void writeConfig(String category, String key, double value) {
+		config = new Configuration(new File(file));
+		try {
+			config.load();
+			double set = config.get(category, key, value).getDouble();
+			config.getCategory(category).get(key).set(value);
 		} catch (Exception e) {
 			System.out.println("Cannot load configuration file!");
 		} finally {

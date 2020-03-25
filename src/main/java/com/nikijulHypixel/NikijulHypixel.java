@@ -3,7 +3,7 @@ package com.nikijulHypixel;
 import org.lwjgl.input.Keyboard;
 
 import com.nikijulHypixel.bazaar.ActivateItems;
-import com.nikijulHypixel.bazaar.BazaarMain;
+import com.nikijulHypixel.bazaar.BazaarManager;
 import com.nikijulHypixel.config.ConfigNikijulHypixel;
 import com.nikijulHypixel.utils.Events;
 import com.nikijulHypixel.utils.KeyHandler;
@@ -30,7 +30,7 @@ public class NikijulHypixel {
 	public static ConfigNikijulHypixel configItemsPrices = new ConfigNikijulHypixel();
 	
 	
-	public static BazaarMain bazaarMain = new BazaarMain();
+	public static BazaarManager bazaarManager = new BazaarManager();
 	
 	public static ActivateItems activateItems = new ActivateItems();
 	
@@ -62,7 +62,7 @@ public class NikijulHypixel {
 		
 		
 		/* Load ApiKey */
-		bazaarMain.loadkey();
+		bazaarManager.loadkey();
 
 		
 		/* Events */

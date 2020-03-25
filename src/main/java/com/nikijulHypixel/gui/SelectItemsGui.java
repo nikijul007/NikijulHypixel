@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.bazaar.ActivateItems;
-import com.nikijulHypixel.bazaar.BazaarMain;
 import com.nikijulHypixel.gui.category.GuiFarming;
 
 import net.minecraft.client.Minecraft;
@@ -89,7 +88,7 @@ public class SelectItemsGui extends GuiScreen {
 			
 			break;
 		case 1:
-			NikijulHypixel.bazaarMain.refreshPrices();
+			NikijulHypixel.bazaarManager.refreshPrices();
 			Minecraft.getMinecraft().displayGuiScreen(new GuiZealot());
 			break;
 		case 2: 
