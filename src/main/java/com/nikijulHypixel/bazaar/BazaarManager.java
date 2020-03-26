@@ -37,11 +37,16 @@ public class BazaarManager {
 	private String key;
 	private long lastTimestamp = 0;
 
-	private String firstBuy = "buyPrice\":";
-	private String lastBuy = ",\"buyVol";
+	
+	private String firstBuySummary = "buy_summary";
+	private String lastBuySummary = "}";
+	
 
-	private String firstSell = "sellPrice\":";
-	private String lastSell = ",\"sellVol";
+	private String firstSellSummary = "sell_summary";
+	private String lastSellSummary = "}";
+	
+	private String first = "pricePerUnit\":"; //sell summary ... pricePerUnit
+	private String last = ",\"orders"; //sell summary ... orders
 
 	private ArrayList<AllItems> selectedItems = new ArrayList<AllItems>();
 
@@ -63,8 +68,8 @@ public class BazaarManager {
 			return;
 		}
 		// ÄNDERN diff >= 60;
-		if (diff >= 5) {
-			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Aktualisiert!"));
+		if (diff >= 20) {
+			//Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Aktualisiert!"));
 			quickStatus();
 
 			// for(AllItems items : selectedItems) {
@@ -74,7 +79,7 @@ public class BazaarManager {
 			lastTimestamp = currentTimestamp;
 		} else {
 			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
-					new ChatComponentText("Wird in " + (60 - diff) + " Sekunden aktualisiert!"));
+					new ChatComponentText("Wird in " + (20 - diff) + " Sekunden aktualisiert!"));
 		}
 	}
 
@@ -99,30 +104,36 @@ public class BazaarManager {
 		// String s = NikijulHypixel.configTemp.getString(itemName, "status");
 		itemName = itemName.toLowerCase();
 
-		String buyPriceString = StringUtils.substringBetween(s, firstBuy, lastBuy);
-		String sellPriceString = StringUtils.substringBetween(s, firstSell, lastSell);
+		String buySummary = StringUtils.substringBetween(s, firstBuySummary, lastBuySummary);
+		
+		String sellSummary = StringUtils.substringBetween(s, firstSellSummary, lastSellSummary);
+		
+		
+		String buyPriceString = StringUtils.substringBetween(buySummary, first, last);
+		String sellPriceString = StringUtils.substringBetween(sellSummary, first, last);
+		
+
 
 		double buyPrice = toDouble(buyPriceString);
 		double sellPrice = toDouble(sellPriceString);
+		
+		
 
-		double diff = (sellPrice - 0.1) - (buyPrice + 0.1);
-		diff = diff - (diff * 0.01);
-		diff = formatDouble(diff);
+		double diff = (sellPrice - 0.1d) - (buyPrice + 0.1d);
+		diff = diff - (sellPrice * 0.01);
+		
+		buyPriceString = formatDouble(buyPrice);
+		System.out.println(buyPrice);
+		sellPriceString = formatDouble(sellPrice);
+		
+		String diffString = formatDouble(diff);
 
 		if (NikijulHypixel.configItemsPrices.hasCategory(itemName)) {
 			NikijulHypixel.configItems.removeConfig(itemName);
 		}
-		NikijulHypixel.configItemsPrices.writeConfig(itemName, "BuyPrice", buyPrice + "");
-		NikijulHypixel.configItemsPrices.writeConfig(itemName, "SellPrice", sellPrice + "");
-		NikijulHypixel.configItemsPrices.writeConfig(itemName, "Profit", diff + "");
-	}
-
-	private void saveRequest(String s, String itemName) {
-		itemName = itemName.toLowerCase();
-		if (NikijulHypixel.configTemp.hasCategory(itemName)) {
-			NikijulHypixel.configTemp.removeConfig(itemName);
-		}
-		NikijulHypixel.configTemp.writeConfig(itemName, "status", s);
+		NikijulHypixel.configItemsPrices.writeConfig(itemName, "BuyPrice", buyPriceString);
+		NikijulHypixel.configItemsPrices.writeConfig(itemName, "SellPrice", sellPriceString);
+		NikijulHypixel.configItemsPrices.writeConfig(itemName, "Profit", diffString);
 	}
 
 	private void sendRequest(String itemID, String itemName) {
@@ -152,9 +163,6 @@ public class BazaarManager {
 				br.close();
 			}
 
-			// saveRequest(responseContent.toString(), itemName);
-			// NikijulHypixel.configTempAllData.writeConfig("items", itemName,
-			// responseContent.toString());
 			writeQuickStatus(responseContent.toString(), itemName);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -168,23 +176,27 @@ public class BazaarManager {
 		double number;
 
 		number = Double.parseDouble(s);
-
-		number = formatDouble(number);
-
 		return number;
 	}
 
-	private double formatDouble(double number) {
-		DecimalFormat df = new DecimalFormat("######0.0");
-		DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
-		dfs.setDecimalSeparator('.');
-		df.setDecimalFormatSymbols(dfs);
+	private String formatDouble(double number) {
+		String s = null;
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setDecimalSeparator(',');
+		symbols.setGroupingSeparator('.');
+		
+		DecimalFormat df = new DecimalFormat();
+		
+		df.setDecimalFormatSymbols(symbols);
 		df.setMaximumFractionDigits(1);
-
-		String s = df.format(number);
-
-		number = Double.parseDouble(s);
-		return number;
+		
+		s = df.format(number);
+		
+	
+			System.out.println(s);
+		
+		
+		return s;
 	}
 
 	public ArrayList<AllItems> getSelectedItems() {

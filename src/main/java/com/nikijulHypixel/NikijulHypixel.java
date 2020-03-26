@@ -27,7 +27,6 @@ public class NikijulHypixel {
 	
 	public static ConfigNikijulHypixel configItems = new ConfigNikijulHypixel();
 	public static ConfigNikijulHypixel configItemsPrices = new ConfigNikijulHypixel();
-	public static ConfigNikijulHypixel configTemp = new ConfigNikijulHypixel();
 	
 	
 	public static BazaarManager bazaarManager = new BazaarManager();
@@ -55,9 +54,7 @@ public class NikijulHypixel {
 		
 		configItemsPrices.setFile("ItemsPrices.cfg");
 		configItemsPrices.init();
-		
-		configTemp.setFile("TempConfig.cfg");
-		configTemp.init();
+
 		
 		if(!configApiKey.hasCategory("apikey")) {
 			configApiKey.writeConfig("apikey", "ApiKey", "YOUR KEY");

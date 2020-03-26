@@ -47,11 +47,11 @@ public class GuiPrices extends GuiScreen {
 
 				new GuiButton(0, (this.width - this.xSize) / 2, (this.height - this.ySize) / 2 - 20, 50, 20, "Back"));
 
-		buttonList.add(
-				new GuiButton(2, (this.width - this.xSize) / 2, (this.height - this.ySize) / 2 + ySize - 10, 20, 20, "<"));
+		buttonList.add(new GuiButton(2, (int) ((this.width - xSize * 1f) / 2 + 18),
+				(int) ((this.height - this.ySize * 1.5f) / 2 + ySize * 1.1f -5), 20, 20, "<"));
 
-		buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + xSize - 25,
-				(this.height - this.ySize) / 2 + ySize - 10, 20, 20, ">"));
+		buttonList.add(new GuiButton(1, (int) ((this.width - this.xSize) / 2 + xSize - 40),
+				(int) ((this.height - ySize * 1.5f) / 2 + ySize * 1.1f -5), 20, 20, ">"));
 
 		super.initGui();
 	}
@@ -62,46 +62,48 @@ public class GuiPrices extends GuiScreen {
 		yOffset = 0;
 		this.mc.getTextureManager().bindTexture(new ResourceLocation("nikijulhypixel:textures/gui/background.png"));
 
-		
 		GlStateManager.pushMatrix();
 
 		GlStateManager.scale(1f * 1.55f, 1f * 1.5f, 1f);
-		drawTexturedModalRect( (int) (((this.width - xSize) / 2) / 1.5), (int) (((this.height - ySize) / 2) / 1.5), 0, 0, 256, 256);
+		drawTexturedModalRect((int) (((this.width - xSize) / 2) / 1.5), (int) (((this.height - ySize) / 2) / 1.5), 0, 0,
+				256, 256);
 		GlStateManager.popMatrix();
-		
-//		drawTexturedModalRect((this.width - xSize) / 2, (this.height - ySize) / 2, 0, 0, 256, 256);
-		
-		
+
+		// drawTexturedModalRect((this.width - xSize) / 2, (this.height - ySize)
+		// / 2, 0, 0, 256, 256);
 
 		if (NikijulHypixel.configApiKey.getString("apikey", "ApiKey") == null
 				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").equals("YOUR KEY")
 				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").equals("")
-				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").length() != 36){
+				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").length() != 36) {
 			fontRendererObj.drawString("You need an ApiKey to use this mod.", (this.width - this.xSize) / 2 + 10,
-							(this.height - this.ySize) / 2 + 10 + yOffset, 0xff0000);
+					(this.height - this.ySize) / 2 + 10 + yOffset, 0xff0000);
 			yOffset += 15;
-			fontRendererObj.drawString("Go to on the HypixelServer an get Key by /api!", (this.width - this.xSize) / 2 + 10,
-					(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+			fontRendererObj.drawString("Go to on the HypixelServer an get Key by /api!",
+					(this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
 			yOffset += 15;
-			fontRendererObj.drawString("Copy the key in ApiKey.cfg instead of 'YOUR KEY'!", (this.width - this.xSize) / 2 + 10,
-					(this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+			fontRendererObj.drawString("Copy the key in ApiKey.cfg instead of 'YOUR KEY'!",
+					(this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
 
 		} else {
 			int firstItem = (pageNumber - 1) * itemsPerPage;
-			
+
 			fontRendererObj.drawString("ITEM NAME", (this.width - this.xSize) / 2 + 10,
 					(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-			
-			fontRendererObj.drawString("BUY", (this.width - this.xSize) / 2 + 10 + 250 - fontRendererObj.getStringWidth("BUY"),
+
+			fontRendererObj.drawString("BUY",
+					(this.width - this.xSize) / 2 + 10 + 250 - fontRendererObj.getStringWidth("BUY"),
 					(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-			
-			fontRendererObj.drawString("SELL", (this.width - this.xSize) / 2 + 10 + 320 - fontRendererObj.getStringWidth("SELL"),
+
+			fontRendererObj.drawString("SELL",
+					(this.width - this.xSize) / 2 + 10 + 320 - fontRendererObj.getStringWidth("SELL"),
 					(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-			
-			fontRendererObj.drawString("PROFIT", (this.width - this.xSize) / 2 + 10 + 380 - fontRendererObj.getStringWidth("PROFIT"),
+
+			fontRendererObj.drawString("PROFIT",
+					(this.width - this.xSize) / 2 + 10 + 380 - fontRendererObj.getStringWidth("PROFIT"),
 					(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
 			yOffset += 15;
-			
+
 			if (pageNumber < pages) {
 
 				for (int i = firstItem; i < firstItem + itemsPerPage; i++) {
@@ -109,23 +111,23 @@ public class GuiPrices extends GuiScreen {
 					String sellPrice = NikijulHypixel.configItemsPrices.getString(name, "SellPrice");
 					String buyPrice = NikijulHypixel.configItemsPrices.getString(name, "BuyPrice");
 					String profit = NikijulHypixel.configItemsPrices.getString(name, "Profit");
-					
+
 					int sellPriceWidth = fontRendererObj.getStringWidth(sellPrice);
 					int buyPriceWidth = fontRendererObj.getStringWidth(buyPrice);
 					int profitWidth = fontRendererObj.getStringWidth(profit);
-					
+
 					fontRendererObj.drawString(name, (this.width - this.xSize) / 2 + 10,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-					
+
 					fontRendererObj.drawString(buyPrice, (this.width - this.xSize) / 2 + 10 + 250 - buyPriceWidth,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-					
+
 					fontRendererObj.drawString(sellPrice, (this.width - this.xSize) / 2 + 10 + 320 - sellPriceWidth,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-					
+
 					fontRendererObj.drawString(profit, (this.width - this.xSize) / 2 + 10 + 380 - profitWidth,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-					
+
 					yOffset += 15;
 				}
 			} else {
@@ -134,23 +136,23 @@ public class GuiPrices extends GuiScreen {
 					String sellPrice = NikijulHypixel.configItemsPrices.getString(name, "SellPrice");
 					String buyPrice = NikijulHypixel.configItemsPrices.getString(name, "BuyPrice");
 					String profit = NikijulHypixel.configItemsPrices.getString(name, "Profit");
-					
+
 					int sellPriceWidth = fontRendererObj.getStringWidth(sellPrice);
 					int buyPriceWidth = fontRendererObj.getStringWidth(buyPrice);
 					int profitWidth = fontRendererObj.getStringWidth(profit);
-					
+
 					fontRendererObj.drawString(name, (this.width - this.xSize) / 2 + 10,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-					
+
 					fontRendererObj.drawString(buyPrice, (this.width - this.xSize) / 2 + 10 + 250 - buyPriceWidth,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-					
+
 					fontRendererObj.drawString(sellPrice, (this.width - this.xSize) / 2 + 10 + 320 - sellPriceWidth,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-					
+
 					fontRendererObj.drawString(profit, (this.width - this.xSize) / 2 + 10 + 380 - profitWidth,
 							(this.height - this.ySize) / 2 + 10 + yOffset, 0xffffff);
-					
+
 					yOffset += 15;
 
 				}
