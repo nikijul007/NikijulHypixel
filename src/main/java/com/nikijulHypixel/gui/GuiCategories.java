@@ -17,19 +17,19 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCategories extends GuiScreen {
 
-	protected int xSize = 256;
-	protected int ySize = 205;
+	private int xSize = 256;
+	private int ySize = 205;
 
-	protected static String fileLocation = NikijulHypixel.MODID + ":textures/gui/";
+	private static String fileLocation = NikijulHypixel.MODID + ":textures/gui/";
 
-	private ResourceLocation buttonTexture = new ResourceLocation(NikijulHypixel.MODID + ":textures/gui/apple.png");
+	private ResourceLocation buttonTexture;
 
-	protected static int itemsPerLine = 6;
+	private static int itemsPerLine = 6;
 
-	protected int bigButtonWidth = 50;
-	protected int bigButtonHeight = 20;
+	private int bigButtonWidth = 50;
+	private int bigButtonHeight = 20;
 
-	protected int smallButtonSize = 20;
+	private int smallButtonSize = 20;
 
 	private String currentPageName = AllCategories.FARMING.name();
 
