@@ -37,16 +37,14 @@ public class BazaarManager {
 	private String key;
 	private long lastTimestamp = 0;
 
-	
 	private String firstBuySummary = "buy_summary";
 	private String lastBuySummary = "}";
-	
 
 	private String firstSellSummary = "sell_summary";
 	private String lastSellSummary = "}";
-	
-	private String first = "pricePerUnit\":"; //sell summary ... pricePerUnit
-	private String last = ",\"orders"; //sell summary ... orders
+
+	private String first = "pricePerUnit\":"; // sell summary ... pricePerUnit
+	private String last = ",\"orders"; // sell summary ... orders
 
 	private ArrayList<AllItems> selectedItems = new ArrayList<AllItems>();
 
@@ -69,18 +67,27 @@ public class BazaarManager {
 		}
 		// ÄNDERN diff >= 60;
 		if (diff >= 20) {
-			//Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText("Aktualisiert!"));
 			quickStatus();
-
-			// for(AllItems items : selectedItems) {
-			// writeQuickStatus(items.name());
-			// }
 
 			lastTimestamp = currentTimestamp;
 		} else {
 			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
-					new ChatComponentText("Wird in " + (20 - diff) + " Sekunden aktualisiert!"));
+					new ChatComponentText("Next update in " + (20 - diff) + " seconds!"));
 		}
+	}
+
+	public ArrayList<AllItems> loadItems() {
+		ArrayList<String> selected = NikijulHypixel.activateItems.loadItems();
+		selectedItems.clear();
+
+		if (!selected.isEmpty()) {
+			for (String s : selected) {
+				AllItems item = AllItems.valueOf(s);
+				selectedItems.add(item);
+			}
+		}
+		return selectedItems;
+
 	}
 
 	private void quickStatus() {
@@ -105,27 +112,21 @@ public class BazaarManager {
 		itemName = itemName.toLowerCase();
 
 		String buySummary = StringUtils.substringBetween(s, firstBuySummary, lastBuySummary);
-		
+
 		String sellSummary = StringUtils.substringBetween(s, firstSellSummary, lastSellSummary);
-		
-		
+
 		String buyPriceString = StringUtils.substringBetween(buySummary, first, last);
 		String sellPriceString = StringUtils.substringBetween(sellSummary, first, last);
-		
-
 
 		double buyPrice = toDouble(buyPriceString);
 		double sellPrice = toDouble(sellPriceString);
-		
-		
 
 		double diff = (sellPrice - 0.1d) - (buyPrice + 0.1d);
 		diff = diff - (sellPrice * 0.01);
-		
+
 		buyPriceString = formatDouble(buyPrice);
-		System.out.println(buyPrice);
 		sellPriceString = formatDouble(sellPrice);
-		
+
 		String diffString = formatDouble(diff);
 
 		if (NikijulHypixel.configItemsPrices.hasCategory(itemName)) {
@@ -184,18 +185,14 @@ public class BazaarManager {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator(',');
 		symbols.setGroupingSeparator('.');
-		
+
 		DecimalFormat df = new DecimalFormat();
-		
+
 		df.setDecimalFormatSymbols(symbols);
 		df.setMaximumFractionDigits(1);
-		
+
 		s = df.format(number);
-		
-	
-			System.out.println(s);
-		
-		
+
 		return s;
 	}
 

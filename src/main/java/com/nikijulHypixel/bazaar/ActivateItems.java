@@ -20,7 +20,7 @@ public class ActivateItems {
 		String items = null;
 		ArrayList<String> itemList = new ArrayList<String>();
 
-		if (NikijulHypixel.configItems.hasCategory("items") & NikijulHypixel.configItems.hasKey("items", "Items")) {
+		if (NikijulHypixel.configItems.hasCategory("items") && NikijulHypixel.configItems.hasKey("items", "Items")) {
 			items = NikijulHypixel.configItems.getString("items", "Items");
 			String[] itemArray = items.split(",");
 
@@ -35,49 +35,38 @@ public class ActivateItems {
 
 	public void saveItems() {
 		String items = "";
+		
 		if (NikijulHypixel.configItems.hasCategory("items")) {
 			NikijulHypixel.configItems.removeConfig("items");
 		}
-
+		
+		if(!selectedItems.isEmpty()) {
 		for (String item : selectedItems) {
 			items = items.concat(item + ",");
 		}
 
 		NikijulHypixel.configItems.writeConfig("items", "Items", items);
-
-	}
-
-	public void addItem(String name) {
-		selectedItems = loadItems();
-		name = name.toUpperCase();
-		try {
-			AllItems.valueOf(name);
-			if (!selectedItems.contains(name)) {
-				selectedItems.add(name);
-				saveItems();
-			}
-		} catch (IllegalArgumentException e) {
-			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
-					new ChatComponentText(EnumChatFormatting.RED + name + " isn't available in the shop!"));
 		}
-
 	}
 
-	public void addItem(String name, int position) {
+	public void addItem(AllItems item) {
 		selectedItems = loadItems();
-		name = name.toUpperCase();
 
-		if (AllItems.valueOf(name) != null) {
-			if (!selectedItems.contains(name)) {
-				selectedItems.add(position - 1, name);
-			} else {
-				selectedItems.remove(name);
-				selectedItems.add(position - 1, name);
-			}
+		String name = item.name();
+		
+		if (!selectedItems.contains(name)) {
+			selectedItems.add(name);
 			saveItems();
-		} else {
-			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
-					new ChatComponentText(EnumChatFormatting.RED + name + " isn't available in the shop!"));
+		}
+	}
+	
+	public void removeItem(AllItems item) {
+		selectedItems = loadItems();
+
+		String name = item.name();
+		if (selectedItems.contains(name)) {
+			selectedItems.remove(name);
+			saveItems();
 		}
 	}
 

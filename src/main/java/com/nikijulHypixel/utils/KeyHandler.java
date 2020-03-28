@@ -3,7 +3,8 @@ package com.nikijulHypixel.utils;
 import org.lwjgl.input.Keyboard;
 
 import com.nikijulHypixel.NikijulHypixel;
-import com.nikijulHypixel.gui.SelectItemsGui;
+import com.nikijulHypixel.gui.GuiCategories;
+import com.nikijulHypixel.gui.GuiPrices;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -16,8 +17,12 @@ public class KeyHandler {
 
 	@SubscribeEvent
 	public void onKeyPressed(KeyInputEvent event) {
-		if (NikijulHypixel.keyBinding.isKeyDown()) {
-			Minecraft.getMinecraft().displayGuiScreen(new SelectItemsGui());
+		if (NikijulHypixel.keyBindingCategory.isKeyDown()) {
+			Minecraft.getMinecraft().displayGuiScreen(new GuiCategories());
+		}
+		if (NikijulHypixel.keyBindingPrices.isKeyDown()) {
+			NikijulHypixel.bazaarManager.loadItems();
+			Minecraft.getMinecraft().displayGuiScreen(new GuiPrices());
 		}
 
 	}

@@ -33,8 +33,8 @@ public class NikijulHypixel {
 	
 	public static ActivateItems activateItems = new ActivateItems();
 	
-	public static KeyBinding keyBinding = new KeyBinding("keyBinding.openZealotGui", Keyboard.KEY_P,  "category.nikijul");
-	
+	public static KeyBinding keyBindingCategory = new KeyBinding("keyBinding.openCategoryGui", Keyboard.KEY_P,  "category.nikijul");
+	public static KeyBinding keyBindingPrices = new KeyBinding("keyBinding.openPricesGui", Keyboard.KEY_O,  "category.nikijul");
 	
 	
 	@EventHandler
@@ -66,7 +66,8 @@ public class NikijulHypixel {
 
 		
 		/* Key-Binding */
-		ClientRegistry.registerKeyBinding(keyBinding);
+		ClientRegistry.registerKeyBinding(keyBindingCategory);
+		ClientRegistry.registerKeyBinding(keyBindingPrices);
 		FMLCommonHandler.instance().bus().register(new KeyHandler());
 		
 		

@@ -1,9 +1,12 @@
 package com.nikijulHypixel.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.nikijulHypixel.NikijulHypixel;
-import com.nikijulHypixel.gui.category.GuiFarming;
+import com.nikijulHypixel.bazaar.AllCategories;
+import com.nikijulHypixel.bazaar.AllItems;
+import com.nikijulHypixel.bazaar.BazaarManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -14,41 +17,67 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCategories extends GuiScreen {
 
-	private int xSize = 300;
-	private int ySize = 200;
+	protected int xSize = 256;
+	protected int ySize = 205;
+
+	protected static String fileLocation = NikijulHypixel.MODID + ":textures/gui/";
 
 	private ResourceLocation buttonTexture = new ResourceLocation(NikijulHypixel.MODID + ":textures/gui/apple.png");
-	
-	private int bigButtonWidth = 50;
-	private int bigButtonHeight = 20;
-	
-	private int smallButtonSize = 20;
+
+	protected static int itemsPerLine = 6;
+
+	protected int bigButtonWidth = 50;
+	protected int bigButtonHeight = 20;
+
+	protected int smallButtonSize = 20;
+
+	private String currentPageName = AllCategories.FARMING.name();
 
 	@Override
 	public void initGui() {
-		
+		buttonList.clear();
 
-		buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 0 + 1 * 5,
-				bigButtonWidth, bigButtonHeight, "FARMING"));
-		
-		buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 1 + 2 * 5,
-				bigButtonWidth, bigButtonHeight, "ANIMALS"));
-		
-		buttonList.add(new GuiButton(2, (this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 2 + 3 * 5,
-				bigButtonWidth, bigButtonHeight, "MINING"));
-		
-		buttonList.add(new GuiButton(3, (this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 3 + 4 * 5,
-				bigButtonWidth, bigButtonHeight, "WOOD"));
-		
-		buttonList.add(new GuiButton(4, (this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 4 + 5 * 5,
-				bigButtonWidth, bigButtonHeight, "FISHING"));
-		
-		buttonList.add(new GuiButton(5, (this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 5 + 6 * 5,
-				bigButtonWidth, bigButtonHeight, "COMBAT"));
-		
-		buttonList.add(new GuiButton(6, (this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 - 15 + bigButtonHeight * 6 + 7 * 5,
-				bigButtonWidth, bigButtonHeight, "HYPIXEL"));
-		
+		int k = 0;
+		for (AllCategories category : AllCategories.values()) {
+			buttonList.add(new GuiButton(category.getButtonID(), (this.width - xSize) / 2 + 5,
+					(this.height - ySize) / 2 - 15 + bigButtonHeight * k + (k + 1) * 5, bigButtonWidth, bigButtonHeight,
+					category.name()));
+			k++;
+		}
+
+		buttonList.add(new GuiButton(8, (this.width - xSize) / 2 + 5,
+				(this.height - ySize) / 2 - 15 + bigButtonHeight * k + (k + 1) * 5, bigButtonWidth, bigButtonHeight,
+				"SHOW PRICES"));
+
+		int i = 0;
+		int j = 0;
+
+		ArrayList<AllItems> selectedItems = NikijulHypixel.bazaarManager.loadItems();
+
+		for (AllItems item : AllItems.values()) {
+
+			int color = 0xff182a;
+			if (item.getCategory().equalsIgnoreCase(currentPageName)) {
+
+				buttonTexture = new ResourceLocation(GuiCategories.fileLocation + item.name() + ".png");
+
+				if (selectedItems.contains(item)) {
+					color = 0x04ff00;
+				}
+
+				if (i >= GuiCategories.itemsPerLine) {
+					i = 0;
+					j++;
+				}
+				buttonList.add(new TextureButton(item.getButtonID() + 10,
+						(this.width - xSize) / 2 + 10 + bigButtonWidth + (int) (smallButtonSize * 1.7 * i),
+						(this.height - ySize) / 2 - 15 + bigButtonHeight * j + (j + 1) * 5, smallButtonSize,
+						smallButtonSize, item.name(), currentPageName.toLowerCase(), color));
+				i++;
+			}
+
+		}
+
 		super.initGui();
 	}
 
@@ -59,7 +88,7 @@ public class GuiCategories extends GuiScreen {
 				.bindTexture(new ResourceLocation("nikijulhypixel:textures/gui/categoryBackground.png"));
 
 		drawTexturedModalRect((this.width - this.xSize) / 2, (this.height - this.ySize) / 2 - 15, 0, 0, xSize, ySize);
-		
+
 		super.drawScreen(mouseX, mouseY, partialTicks);
 	}
 
@@ -70,14 +99,41 @@ public class GuiCategories extends GuiScreen {
 
 	@Override
 	protected void actionPerformed(GuiButton button) throws IOException {
-		switch (button.id) {
-		case 0 : 
-			Minecraft.getMinecraft().displayGuiScreen(new GuiFarming());
-			System.out.println("NEUES GUI!!!");
-			break;
-		default:
-			break;
+		if (button.id >= 10 && button.id <= 184) {
+
+			for (AllItems item : AllItems.values()) {
+				if ((item.getButtonID() + 10) == button.id) {
+
+					if (!NikijulHypixel.bazaarManager.loadItems().contains(item)) {
+						NikijulHypixel.activateItems.addItem(item);
+					} else {
+						NikijulHypixel.activateItems.removeItem(item);
+					}
+					initGui();
+					break;
+				}
+			}
+		} else if (button.id >= 1 && button.id <= 7) {
+
+			for (AllCategories category : AllCategories.values()) {
+				if (category.getButtonID() == button.id) {
+
+					if (!category.name().equalsIgnoreCase(currentPageName)) {
+						currentPageName = category.name();
+
+						initGui();
+					}
+					break;
+				}
+			}
+
+		} else if (button.id == 8){
+			
+			NikijulHypixel.bazaarManager.refreshPrices();
+			Minecraft.getMinecraft().displayGuiScreen(new GuiPrices());
+			
 		}
+
 		super.actionPerformed(button);
 	}
 }

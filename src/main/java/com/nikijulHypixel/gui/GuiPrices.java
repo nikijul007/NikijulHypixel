@@ -173,7 +173,7 @@ public class GuiPrices extends GuiScreen {
 		switch (button.id) {
 		case 0:
 			pageNumber = 1;
-			Minecraft.getMinecraft().displayGuiScreen(new SelectItemsGui());
+			Minecraft.getMinecraft().displayGuiScreen(new GuiCategories());
 
 			break;
 		case 2:
