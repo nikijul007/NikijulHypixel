@@ -205,7 +205,7 @@ public class BazaarManager {
 	}
 
 	public ArrayList<AllItems> getSelectedItems() {
-		return selectedItems;
+		return loadItems();
 	}
 
 }
