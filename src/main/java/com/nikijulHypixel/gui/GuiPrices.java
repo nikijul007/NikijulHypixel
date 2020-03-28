@@ -72,19 +72,18 @@ public class GuiPrices extends GuiScreen {
 		// drawTexturedModalRect((this.width - xSize) / 2, (this.height - ySize)
 		// / 2, 0, 0, 256, 256);
 
-		if (NikijulHypixel.configApiKey.getString("apikey", "ApiKey") == null
-				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").equals("YOUR KEY")
-				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").equals("")
-				|| NikijulHypixel.configApiKey.getString("apikey", "ApiKey").length() != 36) {
+		if (!NikijulHypixel.bazaarManager.isKeyValid()) {
 			fontRendererObj.drawString("You need an ApiKey to use this mod.", (this.width - this.xSize) / 2 + 10,
-					(this.height - this.ySize) / 2 + 10 + yOffset, 0xff0000);
+					(this.height - this.ySize) / 2 + 10 + yOffset, 0xfffff);
 			yOffset += 15;
 			fontRendererObj.drawString("Go to on the HypixelServer an get Key by /api!",
-					(this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
+					(this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 10 + yOffset, 0xfffff);
 			yOffset += 15;
 			fontRendererObj.drawString("Copy the key in ApiKey.cfg instead of 'YOUR KEY'!",
-					(this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 10 + yOffset, 0x000573);
-
+					(this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 10 + yOffset, 0xfffff);
+			yOffset += 15;
+			fontRendererObj.drawString("Or use /apikey [APIKEY]",
+					(this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 10 + yOffset, 0xfffff);
 		} else {
 			int firstItem = (pageNumber - 1) * itemsPerPage;
 

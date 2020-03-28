@@ -4,11 +4,13 @@ import org.lwjgl.input.Keyboard;
 
 import com.nikijulHypixel.bazaar.ActivateItems;
 import com.nikijulHypixel.bazaar.BazaarManager;
+import com.nikijulHypixel.commands.CommandApiKey;
 import com.nikijulHypixel.config.ConfigNikijulHypixel;
 import com.nikijulHypixel.utils.KeyHandler;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -76,6 +78,9 @@ public class NikijulHypixel {
 		ClientRegistry.registerKeyBinding(keyBindingCategory);
 		ClientRegistry.registerKeyBinding(keyBindingPrices);
 		FMLCommonHandler.instance().bus().register(new KeyHandler());
+		
+		/* Register Commands */
+		ClientCommandHandler.instance.registerCommand(new CommandApiKey());
 
 	}
 

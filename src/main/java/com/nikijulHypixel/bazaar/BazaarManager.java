@@ -52,6 +52,14 @@ public class BazaarManager {
 		key = NikijulHypixel.configApiKey.getString("apikey", "ApiKey");
 	}
 
+	public boolean isKeyValid() {
+		loadkey();
+		if (key == null || key.equals("YOUR KEY") || key.equals("") || key.length() != 36) {
+			return false;
+		}
+		return true;
+	}
+
 	public String getKey() {
 		return key;
 	}
@@ -71,8 +79,8 @@ public class BazaarManager {
 
 			lastTimestamp = currentTimestamp;
 		} else {
-			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
-					new ChatComponentText("Next update in " + (20 - diff) + " seconds!"));
+			Minecraft.getMinecraft().thePlayer
+					.addChatComponentMessage(new ChatComponentText("Next update in " + (20 - diff) + " seconds!"));
 		}
 	}
 
