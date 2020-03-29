@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import com.nikijulHypixel.bazaar.ActivateItems;
 import com.nikijulHypixel.bazaar.BazaarManager;
 import com.nikijulHypixel.commands.CommandApiKey;
+import com.nikijulHypixel.commands.CommandBazaarUpdateTimer;
 import com.nikijulHypixel.config.ConfigNikijulHypixel;
 import com.nikijulHypixel.utils.KeyHandler;
 
@@ -70,6 +71,10 @@ public class NikijulHypixel {
 		if (!configApiKey.hasCategory("apikey")) {
 			configApiKey.writeConfig("apikey", "ApiKey", "YOUR KEY");
 		}
+		
+		if(!configApiKey.hasCategory("bazaarupdatetime")) {
+			configApiKey.writeConfig("bazaarupdatetime", "Time", "20");
+		}
 
 		/* Load ApiKey */
 		bazaarManager.loadkey();
@@ -81,7 +86,7 @@ public class NikijulHypixel {
 		
 		/* Register Commands */
 		ClientCommandHandler.instance.registerCommand(new CommandApiKey());
-
+		ClientCommandHandler.instance.registerCommand(new CommandBazaarUpdateTimer());
 	}
 
 	@EventHandler

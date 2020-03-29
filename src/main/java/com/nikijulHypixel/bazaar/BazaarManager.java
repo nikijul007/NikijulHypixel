@@ -35,6 +35,7 @@ public class BazaarManager {
 	private static HttpURLConnection connection;
 
 	private String key;
+	private int updateTime;
 	private long lastTimestamp = 0;
 
 	private String firstBuySummary = "buy_summary";
@@ -51,6 +52,19 @@ public class BazaarManager {
 	public void loadkey() {
 		key = NikijulHypixel.configApiKey.getString("apikey", "ApiKey");
 	}
+	
+	public void loadUpdateTime() {
+		
+		try {
+		updateTime = Integer.parseInt(NikijulHypixel.configApiKey.getString("bazaarupdatetime", "Time"));
+		} catch (NumberFormatException e) {
+			if(NikijulHypixel.configApiKey.hasCategory("bazaarupdatetime")) {
+				NikijulHypixel.configApiKey.removeConfig("bazaarupdatetime");
+			}
+			updateTime = 20;
+			NikijulHypixel.configApiKey.writeConfig("bazaarupdatetime", "Time", "20");
+		}
+	}
 
 	public boolean isKeyValid() {
 		loadkey();
@@ -65,22 +79,23 @@ public class BazaarManager {
 	}
 
 	public void refreshPrices() {
+		loadUpdateTime();
 		Date date = new Date();
 		long currentTimestamp = date.getTime();
 		currentTimestamp = currentTimestamp / 1000;
 		long diff = (currentTimestamp - lastTimestamp);
-		if (key == null || key.equals("YOUR KEY") || key.equals("") || key.length() != 36) {
-			loadkey();
+		if (!isKeyValid()) {
 			return;
 		}
 		// ÄNDERN diff >= 60;
-		if (diff >= 20) {
+		System.out.println(updateTime);
+		if (diff >= updateTime) {
 			quickStatus();
 
 			lastTimestamp = currentTimestamp;
 		} else {
 			Minecraft.getMinecraft().thePlayer
-					.addChatComponentMessage(new ChatComponentText("Next update in " + (20 - diff) + " seconds!"));
+					.addChatComponentMessage(new ChatComponentText("Next update in " + (updateTime - diff) + " seconds!"));
 		}
 	}
 

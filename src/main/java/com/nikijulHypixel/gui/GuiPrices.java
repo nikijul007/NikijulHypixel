@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiPrices extends GuiScreen {
 
-	private static ArrayList<AllItems> itemList;
+	private ArrayList<AllItems> itemList;
 
 	private int xSize = 400;
 	private int ySize = 200;
@@ -42,7 +42,7 @@ public class GuiPrices extends GuiScreen {
 		pages = (lastPageItemAmount != 0) ? 1 : 0;
 		pages += length / itemsPerPage;
 		
-		if(pages == 1) {
+		if(pages == 1 && lastPageItemAmount == 0) {
 			lastPageItemAmount = itemsPerPage;
 		}
 
@@ -118,8 +118,7 @@ public class GuiPrices extends GuiScreen {
 				}
 			} else {
 				for (int i = firstItem; i < firstItem + lastPageItemAmount; i++) {
-					drawText(i);
-
+						drawText(i);
 				}
 			}
 		}
