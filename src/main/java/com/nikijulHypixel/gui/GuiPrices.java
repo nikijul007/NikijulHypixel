@@ -38,8 +38,13 @@ public class GuiPrices extends GuiScreen {
 		int length = itemList.size();
 
 		lastPageItemAmount = length % itemsPerPage;
+		
 		pages = (lastPageItemAmount != 0) ? 1 : 0;
 		pages += length / itemsPerPage;
+		
+		if(pages == 1) {
+			lastPageItemAmount = itemsPerPage;
+		}
 
 		buttonList.clear();
 
@@ -109,53 +114,11 @@ public class GuiPrices extends GuiScreen {
 			if (pageNumber < pages) {
 
 				for (int i = firstItem; i < firstItem + itemsPerPage; i++) {
-					String name = itemList.get(i).name().toLowerCase();
-					String sellPrice = NikijulHypixel.configItemsPrices.getString(name, "SellPrice");
-					String buyPrice = NikijulHypixel.configItemsPrices.getString(name, "BuyPrice");
-					String profit = NikijulHypixel.configItemsPrices.getString(name, "Profit");
-
-					int sellPriceWidth = fontRendererObj.getStringWidth(sellPrice);
-					int buyPriceWidth = fontRendererObj.getStringWidth(buyPrice);
-					int profitWidth = fontRendererObj.getStringWidth(profit);
-
-					fontRendererObj.drawString(name, (this.width - this.xSize) / 2 + 10,
-							(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
-
-					fontRendererObj.drawString(buyPrice, (this.width - this.xSize) / 2 + 10 + 250 - buyPriceWidth,
-							(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
-
-					fontRendererObj.drawString(sellPrice, (this.width - this.xSize) / 2 + 10 + 320 - sellPriceWidth,
-							(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
-
-					fontRendererObj.drawString(profit, (this.width - this.xSize) / 2 + 10 + 380 - profitWidth,
-							(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
-
-					yOffset += 15;
+					drawText(i);
 				}
 			} else {
 				for (int i = firstItem; i < firstItem + lastPageItemAmount; i++) {
-					String name = itemList.get(i).name().toLowerCase();
-					String sellPrice = NikijulHypixel.configItemsPrices.getString(name, "SellPrice");
-					String buyPrice = NikijulHypixel.configItemsPrices.getString(name, "BuyPrice");
-					String profit = NikijulHypixel.configItemsPrices.getString(name, "Profit");
-
-					int sellPriceWidth = fontRendererObj.getStringWidth(sellPrice);
-					int buyPriceWidth = fontRendererObj.getStringWidth(buyPrice);
-					int profitWidth = fontRendererObj.getStringWidth(profit);
-
-					fontRendererObj.drawString(name, (this.width - this.xSize) / 2 + 10,
-							(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
-
-					fontRendererObj.drawString(buyPrice, (this.width - this.xSize) / 2 + 10 + 250 - buyPriceWidth,
-							(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
-
-					fontRendererObj.drawString(sellPrice, (this.width - this.xSize) / 2 + 10 + 320 - sellPriceWidth,
-							(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
-
-					fontRendererObj.drawString(profit, (this.width - this.xSize) / 2 + 10 + 380 - profitWidth,
-							(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
-
-					yOffset += 15;
+					drawText(i);
 
 				}
 			}
@@ -163,6 +126,31 @@ public class GuiPrices extends GuiScreen {
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
+	}
+	
+	private void drawText(int i) {
+		String name = itemList.get(i).name().toLowerCase();
+		String sellPrice = NikijulHypixel.configItemsPrices.getString(name, "SellPrice");
+		String buyPrice = NikijulHypixel.configItemsPrices.getString(name, "BuyPrice");
+		String profit = NikijulHypixel.configItemsPrices.getString(name, "Profit");
+
+		int sellPriceWidth = fontRendererObj.getStringWidth(sellPrice);
+		int buyPriceWidth = fontRendererObj.getStringWidth(buyPrice);
+		int profitWidth = fontRendererObj.getStringWidth(profit);
+
+		fontRendererObj.drawString(name, (this.width - this.xSize) / 2 + 10,
+				(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
+
+		fontRendererObj.drawString(buyPrice, (this.width - this.xSize) / 2 + 10 + 250 - buyPriceWidth,
+				(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
+
+		fontRendererObj.drawString(sellPrice, (this.width - this.xSize) / 2 + 10 + 320 - sellPriceWidth,
+				(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
+
+		fontRendererObj.drawString(profit, (this.width - this.xSize) / 2 + 10 + 380 - profitWidth,
+				(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
+
+		yOffset += 15;
 	}
 
 	@Override
