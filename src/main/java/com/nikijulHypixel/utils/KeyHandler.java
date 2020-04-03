@@ -21,8 +21,11 @@ public class KeyHandler {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiCategories());
 		}
 		if (NikijulHypixel.keyBindingPrices.isKeyDown()) {
-			NikijulHypixel.bazaarManager.refreshPrices();
 			Minecraft.getMinecraft().displayGuiScreen(new GuiPrices());
+		}
+		
+		if(NikijulHypixel.keyBindingUpdate.isKeyDown()) {
+			NikijulHypixel.bazaarManager.refreshPrices();
 		}
 
 	}

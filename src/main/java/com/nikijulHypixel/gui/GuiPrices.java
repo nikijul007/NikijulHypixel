@@ -38,11 +38,11 @@ public class GuiPrices extends GuiScreen {
 		int length = itemList.size();
 
 		lastPageItemAmount = length % itemsPerPage;
-		
+
 		pages = (lastPageItemAmount != 0) ? 1 : 0;
 		pages += length / itemsPerPage;
-		
-		if(pages == 1 && lastPageItemAmount == 0) {
+
+		if (pages == 1 && lastPageItemAmount == 0) {
 			lastPageItemAmount = itemsPerPage;
 		}
 
@@ -118,7 +118,7 @@ public class GuiPrices extends GuiScreen {
 				}
 			} else {
 				for (int i = firstItem; i < firstItem + lastPageItemAmount; i++) {
-						drawText(i);
+					drawText(i);
 				}
 			}
 		}
@@ -126,8 +126,14 @@ public class GuiPrices extends GuiScreen {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 	}
-	
+
 	private void drawText(int i) {
+		
+		String time = NikijulHypixel.bazaarManager.getLastUpdateTimeString();
+		int timeWidth = fontRendererObj.getStringWidth(time);
+		fontRendererObj.drawString(time, (this.width / 2) + xSize / 2 - 10 - timeWidth ,
+				(this.height - this.ySize) / 2 - ((height / 10 - ySize / 10)), 0xffffff);
+
 		String name = itemList.get(i).name().toLowerCase();
 		String sellPrice = NikijulHypixel.configItemsPrices.getString(name, "SellPrice");
 		String buyPrice = NikijulHypixel.configItemsPrices.getString(name, "BuyPrice");

@@ -6,9 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -20,6 +22,7 @@ import com.google.gson.JsonParser;
 import com.ibm.icu.impl.IllegalIcuArgumentException;
 import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.config.ConfigNikijulHypixel;
+import com.sun.jmx.snmp.Timestamp;
 
 import jdk.nashorn.internal.parser.JSONParser;
 import net.minecraft.client.Minecraft;
@@ -27,8 +30,6 @@ import net.minecraft.client.util.JsonBlendingMode;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import scala.util.parsing.json.JSON;
-import scala.util.parsing.json.JSONObject;
 
 public class BazaarManager {
 
@@ -37,6 +38,7 @@ public class BazaarManager {
 	private String key;
 	private int updateTime;
 	private long lastTimestamp = 0;
+	private String lastUpdateTime = "";
 
 	private String firstBuySummary = "buy_summary";
 	private String lastBuySummary = "}";
@@ -46,11 +48,17 @@ public class BazaarManager {
 
 	private String first = "pricePerUnit\":"; // sell summary ... pricePerUnit
 	private String last = ",\"orders"; // sell summary ... orders
+	
+	private static DateFormat dateFormat = new SimpleDateFormat("kk:mm:ss  dd.MM.yyyy");
 
 	private ArrayList<AllItems> selectedItems = new ArrayList<AllItems>();
 
 	public void loadkey() {
 		key = NikijulHypixel.configApiKey.getString("apikey", "ApiKey");
+	}
+	
+	public String getLastUpdateTimeString() {
+		return lastUpdateTime;
 	}
 	
 	public void loadUpdateTime() {
@@ -90,9 +98,14 @@ public class BazaarManager {
 		// ÄNDERN diff >= 60;
 		System.out.println(updateTime);
 		if (diff >= updateTime) {
-			quickStatus();
-
 			lastTimestamp = currentTimestamp;
+			Timestamp ts = new Timestamp(lastTimestamp);
+			Date dateUpdate = new Date(ts.getDateTime());
+
+			lastUpdateTime = dateFormat.format(date);
+			
+			quickStatus();
+			
 		} else {
 			Minecraft.getMinecraft().thePlayer
 					.addChatComponentMessage(new ChatComponentText("Next update in " + (updateTime - diff) + " seconds!"));
@@ -169,8 +182,8 @@ public class BazaarManager {
 			connection = (HttpURLConnection) url.openConnection();
 
 			connection.setRequestMethod("GET");
-			connection.setConnectTimeout(5000);
-			connection.setReadTimeout(5000);
+			connection.setConnectTimeout(2000);
+			connection.setReadTimeout(2000);
 			int status = connection.getResponseCode();
 
 			if (status > 200) {
