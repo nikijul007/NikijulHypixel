@@ -50,7 +50,7 @@ public class BazaarManager {
 
 	private String first = "pricePerUnit\":"; // sell summary ... pricePerUnit
 	private String last = ",\"orders"; // sell summary ... orders
-	
+
 	private static DateFormat dateFormat = new SimpleDateFormat("kk:mm:ss  dd.MM.yyyy");
 
 	private ArrayList<AllItems> selectedItems = new ArrayList<AllItems>();
@@ -58,17 +58,17 @@ public class BazaarManager {
 	public void loadkey() {
 		key = NikijulHypixel.configApiKey.getString("apikey", "ApiKey");
 	}
-	
+
 	public String getLastUpdateTimeString() {
 		return lastUpdateTime;
 	}
-	
+
 	public void loadUpdateTime() {
-		
+
 		try {
-		updateTime = Integer.parseInt(NikijulHypixel.configApiKey.getString("bazaarupdatetime", "Time"));
+			updateTime = Integer.parseInt(NikijulHypixel.configApiKey.getString("bazaarupdatetime", "Time"));
 		} catch (NumberFormatException e) {
-			if(NikijulHypixel.configApiKey.hasCategory("bazaarupdatetime")) {
+			if (NikijulHypixel.configApiKey.hasCategory("bazaarupdatetime")) {
 				NikijulHypixel.configApiKey.removeConfig("bazaarupdatetime");
 			}
 			updateTime = 20;
@@ -105,12 +105,12 @@ public class BazaarManager {
 			Date dateUpdate = new Date(ts.getTime());
 
 			lastUpdateTime = dateFormat.format(date);
-			
+
 			quickStatus();
-			
+
 		} else {
-			Minecraft.getMinecraft().thePlayer
-					.addChatComponentMessage(new ChatComponentText("Next update in " + (updateTime - diff) + " seconds!"));
+			Minecraft.getMinecraft().thePlayer.addChatComponentMessage(
+					new ChatComponentText("Next update in " + (updateTime - diff) + " seconds!"));
 		}
 	}
 
@@ -136,14 +136,13 @@ public class BazaarManager {
 				AllItems item = AllItems.valueOf(s);
 				if (item != null) {
 					selectedItems.add(item);
-					Thread requestThread = new Thread( () ->
-					{sendRequest(item.getID(), item.name());
+					Thread requestThread = new Thread(() -> {
+						sendRequest(item.getID(), item.name());
 					});
-					
+
 					requestThread.run();
 				}
 
-				
 			} catch (IllegalArgumentException e) {
 			}
 
@@ -187,7 +186,7 @@ public class BazaarManager {
 		try {
 			URL url = new URL("https://api.hypixel.net/skyblock/bazaar/product?key=" + key + "&productId=" + itemID);
 			connection = (HttpURLConnection) url.openConnection();
-			
+
 			connection.setRequestMethod("GET");
 			connection.setConnectTimeout(2000);
 			connection.setReadTimeout(2000);
@@ -214,7 +213,6 @@ public class BazaarManager {
 			// responseContent
 		}
 	}
-	
 
 	private double toDouble(String s) {
 		double number;

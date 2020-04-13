@@ -28,8 +28,7 @@ public class NikijulHypixel {
 	public static final String MODID = "nikijulhypixel";
 	public static final String NAME = "NikijulHypixel";
 	public static final String VERSION = "1.0";
-	
-	
+
 	public static ConfigNikijulHypixel configApiKey = new ConfigNikijulHypixel();
 
 	public static ConfigNikijulHypixel configItems = new ConfigNikijulHypixel();
@@ -43,7 +42,6 @@ public class NikijulHypixel {
 			"category.nikijul");
 	public static KeyBinding keyBindingPrices = new KeyBinding("keyBinding.openPricesGui", Keyboard.KEY_O,
 			"category.nikijul");
-			
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -75,8 +73,8 @@ public class NikijulHypixel {
 		if (!configApiKey.hasCategory("apikey")) {
 			configApiKey.writeConfig("apikey", "ApiKey", "YOUR KEY");
 		}
-		
-		if(!configApiKey.hasCategory("bazaarupdatetime")) {
+
+		if (!configApiKey.hasCategory("bazaarupdatetime")) {
 			configApiKey.writeConfig("bazaarupdatetime", "Time", "20");
 		}
 
@@ -86,9 +84,8 @@ public class NikijulHypixel {
 		/* Key-Binding */
 		ClientRegistry.registerKeyBinding(keyBindingCategory);
 		ClientRegistry.registerKeyBinding(keyBindingPrices);
-		ClientRegistry.registerKeyBinding(keyBindingUpdate);
 		FMLCommonHandler.instance().bus().register(new KeyHandler());
-		
+
 		/* Register Commands */
 		ClientCommandHandler.instance.registerCommand(new CommandApiKey());
 		ClientCommandHandler.instance.registerCommand(new CommandBazaarUpdateTimer());

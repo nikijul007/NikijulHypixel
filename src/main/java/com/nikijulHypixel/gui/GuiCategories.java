@@ -127,11 +127,11 @@ public class GuiCategories extends GuiScreen {
 				}
 			}
 
-		} else if (button.id == 8){
-			
+		} else if (button.id == 8) {
+
 			NikijulHypixel.bazaarManager.refreshPrices();
 			Minecraft.getMinecraft().displayGuiScreen(new GuiPrices());
-			
+
 		}
 
 		super.actionPerformed(button);
