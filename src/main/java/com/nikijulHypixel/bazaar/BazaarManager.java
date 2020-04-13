@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -16,15 +17,16 @@ import java.util.Date;
 import java.util.Scanner;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpRequest;
+import org.apache.http.client.HttpClient;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ibm.icu.impl.IllegalIcuArgumentException;
 import com.nikijulHypixel.NikijulHypixel;
 import com.nikijulHypixel.config.ConfigNikijulHypixel;
-import com.sun.jmx.snmp.Timestamp;
+import com.sun.jna.platform.win32.Sspi.TimeStamp;
 
-import jdk.nashorn.internal.parser.JSONParser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.JsonBlendingMode;
 import net.minecraft.util.ChatComponentText;
@@ -100,7 +102,7 @@ public class BazaarManager {
 		if (diff >= updateTime) {
 			lastTimestamp = currentTimestamp;
 			Timestamp ts = new Timestamp(lastTimestamp);
-			Date dateUpdate = new Date(ts.getDateTime());
+			Date dateUpdate = new Date(ts.getTime());
 
 			lastUpdateTime = dateFormat.format(date);
 			
@@ -134,9 +136,14 @@ public class BazaarManager {
 				AllItems item = AllItems.valueOf(s);
 				if (item != null) {
 					selectedItems.add(item);
-					sendRequest(item.getID(), item.name());
+					Thread requestThread = new Thread( () ->
+					{sendRequest(item.getID(), item.name());
+					});
+					
+					requestThread.run();
 				}
 
+				
 			} catch (IllegalArgumentException e) {
 			}
 
@@ -180,7 +187,7 @@ public class BazaarManager {
 		try {
 			URL url = new URL("https://api.hypixel.net/skyblock/bazaar/product?key=" + key + "&productId=" + itemID);
 			connection = (HttpURLConnection) url.openConnection();
-
+			
 			connection.setRequestMethod("GET");
 			connection.setConnectTimeout(2000);
 			connection.setReadTimeout(2000);
@@ -199,7 +206,6 @@ public class BazaarManager {
 				}
 				br.close();
 			}
-
 			writeQuickStatus(responseContent.toString(), itemName);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -208,6 +214,7 @@ public class BazaarManager {
 			// responseContent
 		}
 	}
+	
 
 	private double toDouble(String s) {
 		double number;

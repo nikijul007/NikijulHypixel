@@ -43,8 +43,6 @@ public class NikijulHypixel {
 			"category.nikijul");
 	public static KeyBinding keyBindingPrices = new KeyBinding("keyBinding.openPricesGui", Keyboard.KEY_O,
 			"category.nikijul");
-	public static KeyBinding keyBindingUpdate = new KeyBinding("keyBinding.updatePrices", Keyboard.KEY_I, 
-			"category.nikijul");
 			
 
 	@EventHandler

@@ -130,6 +130,7 @@ public class GuiPrices extends GuiScreen {
 	private void drawText(int i) {
 		
 		String time = NikijulHypixel.bazaarManager.getLastUpdateTimeString();
+		time = "Last Update: " + time;
 		int timeWidth = fontRendererObj.getStringWidth(time);
 		fontRendererObj.drawString(time, (this.width / 2) + xSize / 2 - 10 - timeWidth ,
 				(this.height - this.ySize) / 2 - ((height / 10 - ySize / 10)), 0xffffff);
