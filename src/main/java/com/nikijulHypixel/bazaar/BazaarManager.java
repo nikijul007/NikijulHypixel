@@ -114,6 +114,13 @@ public class BazaarManager {
 		}
 	}
 
+	public void refreshPrice(AllItems item) {
+		Thread requestThread = new Thread(() -> {
+			sendRequest(item.getID(), item.name());
+		});
+		requestThread.run();
+	}
+
 	public ArrayList<AllItems> loadItems() {
 		ArrayList<String> selected = NikijulHypixel.activateItems.loadItems();
 		selectedItems.clear();

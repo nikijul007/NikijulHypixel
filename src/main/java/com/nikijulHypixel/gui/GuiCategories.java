@@ -33,6 +33,13 @@ public class GuiCategories extends GuiScreen {
 
 	private String currentPageName = AllCategories.FARMING.name();
 
+	public GuiCategories(String pageName) {
+		currentPageName = pageName;
+	}
+	
+	public GuiCategories() {
+	}
+	
 	@Override
 	public void initGui() {
 		buttonList.clear();
@@ -69,7 +76,7 @@ public class GuiCategories extends GuiScreen {
 					i = 0;
 					j++;
 				}
-				buttonList.add(new TextureButton(item.getButtonID() + 10,
+				buttonList.add(new TextureButton(item.getButtonID(),
 						(this.width - xSize) / 2 + 10 + bigButtonWidth + (int) (smallButtonSize * 1.7 * i),
 						(this.height - ySize) / 2 - 15 + bigButtonHeight * j + (j + 1) * 5, smallButtonSize,
 						smallButtonSize, item.name(), currentPageName.toLowerCase(), color));
@@ -98,12 +105,14 @@ public class GuiCategories extends GuiScreen {
 	}
 
 	@Override
-	protected void actionPerformed(GuiButton button) throws IOException {
-		if (button.id >= 10 && button.id <= 184) {
+	protected void actionPerformed(GuiButton button) throws IOException {	
+		
+		if (button.id >= 100 && button.id <= 800) {
 
 			for (AllItems item : AllItems.values()) {
-				if ((item.getButtonID() + 10) == button.id) {
+				if ((item.getButtonID()) == button.id) {
 
+					if(!isCtrlKeyDown()) {
 					if (!NikijulHypixel.bazaarManager.loadItems().contains(item)) {
 						NikijulHypixel.activateItems.addItem(item);
 					} else {
@@ -111,6 +120,10 @@ public class GuiCategories extends GuiScreen {
 					}
 					initGui();
 					break;
+					} else {
+						NikijulHypixel.bazaarManager.refreshPrice(item);
+						Minecraft.getMinecraft().displayGuiScreen(new GuiPrice(item, currentPageName));
+					}
 				}
 			}
 		} else if (button.id >= 1 && button.id <= 7) {

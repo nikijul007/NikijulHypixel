@@ -16,48 +16,29 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiPrices extends GuiScreen {
+public class GuiPrice extends GuiScreen {
 
 	private ArrayList<AllItems> itemList;
 
 	private int xSize = 400;
 	private int ySize = 200;
 	private int yOffset = 0;
+	private AllItems item;
+	private String lastPage = "";
 
-	private int itemsPerPage = 8;
-	private int pageNumber = 1;
-	private int pages;
-	private int lastPageItemAmount;
+	public GuiPrice(AllItems item, String lastPage) {
+		this.item = item;
+		this.lastPage = lastPage;
+	}
 
 	@Override
 	public void initGui() {
-
-		NikijulHypixel.activateItems.loadItems();
-		itemList = NikijulHypixel.bazaarManager.getSelectedItems();
-
-		int length = itemList.size();
-
-		lastPageItemAmount = length % itemsPerPage;
-
-		pages = (lastPageItemAmount != 0) ? 1 : 0;
-		pages += length / itemsPerPage;
-
-		if (pages == 1 && lastPageItemAmount == 0) {
-			lastPageItemAmount = itemsPerPage;
-		}
-
 		buttonList.clear();
 
 		buttonList.add(
 
 				new GuiButton(0, (this.width - this.xSize) / 2 + ((width - ySize) / 40),
 						(this.height - this.ySize) / 2 - ((height / 10 - ySize / 10)), 50, 20, "Back"));
-
-		buttonList.add(new GuiButton(2, (int) ((this.width - xSize) / 2 + 18), (int) (this.height / 3 + ySize / 2), 20,
-				20, "<"));
-
-		buttonList.add(new GuiButton(1, (int) ((this.width - this.xSize) / 2 + xSize - 40),
-				(int) (this.height / 3 + ySize / 2), 20, 20, ">"));
 
 		super.initGui();
 	}
@@ -93,7 +74,6 @@ public class GuiPrices extends GuiScreen {
 			fontRendererObj.drawString("Or use /apikey [APIKEY]", (this.width - this.xSize) / 2 + 10,
 					(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xfffff);
 		} else {
-			int firstItem = (pageNumber - 1) * itemsPerPage;
 
 			fontRendererObj.drawString("ITEM NAME", (this.width - this.xSize) / 2 + 10,
 					(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
@@ -111,23 +91,14 @@ public class GuiPrices extends GuiScreen {
 					(this.height - this.ySize) / 2 - (height / 7 - ySize / 4) + yOffset, 0xffffff);
 			yOffset += 15;
 
-			if (pageNumber < pages) {
-
-				for (int i = firstItem; i < firstItem + itemsPerPage; i++) {
-					drawText(i);
-				}
-			} else {
-				for (int i = firstItem; i < firstItem + lastPageItemAmount; i++) {
-					drawText(i);
-				}
-			}
+			drawText();
 		}
 
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 	}
 
-	private void drawText(int i) {
+	private void drawText() {
 
 		String time = NikijulHypixel.bazaarManager.getLastUpdateTimeString();
 		time = "Last Update: " + time;
@@ -135,7 +106,7 @@ public class GuiPrices extends GuiScreen {
 		fontRendererObj.drawString(time, (this.width / 2) + xSize / 2 - 10 - timeWidth,
 				(this.height - this.ySize) / 2 - ((height / 10 - ySize / 10)), 0xffffff);
 
-		String name = itemList.get(i).name().toLowerCase();
+		String name = item.name().toLowerCase();
 		String sellPrice = NikijulHypixel.configItemsPrices.getString(name, "SellPrice");
 		String buyPrice = NikijulHypixel.configItemsPrices.getString(name, "BuyPrice");
 		String profit = NikijulHypixel.configItemsPrices.getString(name, "Profit");
@@ -169,24 +140,10 @@ public class GuiPrices extends GuiScreen {
 	protected void actionPerformed(GuiButton button) throws IOException {
 		switch (button.id) {
 		case 0:
-			pageNumber = 1;
-			Minecraft.getMinecraft().displayGuiScreen(new GuiCategories());
+			Minecraft.getMinecraft().displayGuiScreen(new GuiCategories(lastPage));
 
 			break;
-		case 2:
-			if (pageNumber > 1) {
-				pageNumber--;
-				initGui();
-			}
 
-			break;
-		case 1:
-			if (pageNumber < pages) {
-				pageNumber++;
-				initGui();
-			}
-
-			break;
 		default:
 			break;
 		}
