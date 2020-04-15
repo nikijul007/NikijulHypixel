@@ -115,10 +115,8 @@ public class BazaarManager {
 	}
 
 	public void refreshPrice(AllItems item) {
-		Thread requestThread = new Thread(() -> {
 			sendRequest(item.getID(), item.name());
-		});
-		requestThread.run();
+	
 	}
 
 	public ArrayList<AllItems> loadItems() {
@@ -143,11 +141,7 @@ public class BazaarManager {
 				AllItems item = AllItems.valueOf(s);
 				if (item != null) {
 					selectedItems.add(item);
-					Thread requestThread = new Thread(() -> {
 						sendRequest(item.getID(), item.name());
-					});
-
-					requestThread.run();
 				}
 
 			} catch (IllegalArgumentException e) {
