@@ -27,7 +27,7 @@ public class NikijulHypixel {
 
 	public static final String MODID = "nikijulhypixel";
 	public static final String NAME = "Nikijul Hypixel Bazaar";
-	public static final String VERSION = "2.0";
+	public static final String VERSION = "1.2";
 
 	public static ConfigNikijulHypixel configApiKey = new ConfigNikijulHypixel();
 
